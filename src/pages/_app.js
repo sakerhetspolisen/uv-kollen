@@ -6,6 +6,7 @@ import {
 import { Inter } from "next/font/google";
 import { DefaultSeo } from "next-seo";
 import React from "react";
+import { Analytics } from '@vercel/analytics/react';
 import Header from "@/components/Header.jsx";
 
 const Input = defineStyleConfig({
@@ -59,6 +60,7 @@ export default function App({ Component, pageProps }) {
       <ChakraProvider theme={theme}>
         <Header />
         <Component {...pageProps} />
+        <Analytics />
       </ChakraProvider>
     </>
   );
