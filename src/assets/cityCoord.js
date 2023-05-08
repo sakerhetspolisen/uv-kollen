@@ -5165,6 +5165,11 @@ const cityFull = [
     long: 13.657397,
   },
   {
+    locality: "Nacka",
+    lat: 59.3100187,
+    long: 18.159903
+  },
+  {
     locality: "Nedansjö",
     lat: 62.376436,
     long: 16.848226,

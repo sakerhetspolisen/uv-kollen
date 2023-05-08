@@ -1032,6 +1032,7 @@ const cityNames = [
   ["Mörlunda", "Hultsfred, Kalmar"],
   ["Mörrum", "Karlshamn, Blekinge"],
   ["Mörsil", "Åre, Jämtland"],
+  ["Nacka", "Stockholm, Stockholm"],
   ["Nedansjö", "Sundsvall, Västernorrland"],
   ["Nedre Gärdsjö", "Rättvik, Dalarna"],
   ["Nibble", "Södertälje, Stockholm"],

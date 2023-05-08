@@ -17,7 +17,7 @@ export async function getServerSideProps(context) {
     const url = `${process.env.API_URL}?lat=${lat}&lng=${long}`;
     const data = await fetch(url);
     const externalUVData = await data.json();
-    const maxUVTime = new Date(externalUVData.uv_max_time).getHours();
+    const maxUVTime = new Date(externalUVData.uv_max_time).getHours() + 1;
     const sunsetTime = new Date(
       externalUVData.sun_info.sun_times.sunset
     ).getHours();
@@ -114,7 +114,7 @@ export default function City({ cityName, data }) {
           pt="50px"
           display="flex"
           justifyContent="center"
-          height="100vh"
+          minHveight="100vh"
           alignItems="center"
           color={fontColor}
           bg={bg}
