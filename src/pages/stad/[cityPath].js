@@ -1,57 +1,44 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
-import { useRouter } from "next/router";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import cityPaths from "@/assets/cityPaths";
-import cityFull from "@/assets/cityCoord";
+import citiesFull from "@/assets/cityCoord";
 
-export async function getStaticPaths() {
-  const paths = [];
-  // eslint-disable-next-line no-restricted-syntax
-  for (const p of cityPaths) {
-    paths.push({
-      params: {
-        cityPath: p,
+export async function getServerSideProps(context) {
+  context.res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=3600',
+  );
+  const { cityPath } = context.query;
+  const index = cityPaths.indexOf(decodeURI(cityPath));
+  if (index !== -1) {
+    const { lat, long, locality } = citiesFull[index];
+    const url = `${process.env.API_URL}?lat=${lat}&lng=${long}`;
+    const data = await fetch(url);
+    const externalUVData = await data.json();
+    const maxUVTime = new Date(externalUVData.uv_max_time).getHours();
+    const sunsetTime = new Date(
+      externalUVData.sun_info.sun_times.sunset
+    ).getHours();
+    return {
+      props: {
+        cityName: locality,
+        data: {
+          uv: (Math.round(externalUVData.uv * 100) / 100).toString(),
+          maxUV: (Math.round(externalUVData.uv_max * 100) / 100).toString(),
+          maxUVAt: maxUVTime,
+          sunsetAt: sunsetTime,
+        }
       },
-    });
+    };
   }
   return {
-    paths,
-    fallback: true,
-  };
-}
-
-async function getWeatherData(lat, long) {
-  const url = `${process.env.API_URL}?lat=${lat}&lng=${long}`;
-  const res = await fetch(url);
-  const uvData = await res.json();
-  return uvData;
-}
-
-export async function getStaticProps(context) {
-  const { cityPath } = context.params;
-  const { lat, long, locality } =
-    cityFull[cityPaths.indexOf(decodeURI(cityPath))];
-  const weather = await getWeatherData(lat, long);
-  const maxUVTime = new Date(weather.uv_max_time).getHours();
-  const sunsetTime = new Date(weather.sun_info.sun_times.sunset).getHours();
-  return {
-    // Passed to the page component as props
-    props: {
-      cityName: locality,
-      data: {
-        uv: (Math.round(weather.uv * 100) / 100).toString(),
-        maxUV: (Math.round(weather.uv_max * 100) / 100).toString(),
-        maxUVAt: maxUVTime,
-        sunsetAt: sunsetTime,
-      },
-    },
+    notFound: true,
   };
 }
 
 export default function City({ cityName, data }) {
-  const router = useRouter();
   const [uvData, setUVData] = useState({
     uv: 0,
     maxUV: 0,
@@ -85,10 +72,6 @@ export default function City({ cityName, data }) {
       setFontColor(parseInt(data.uv.slice(0, 1),10) < 2 ? "white" : "black");
     }
   }, [data]);
-
-  if (router.isFallback) {
-    return <div>Loading...</div>;
-  }
 
   return (
     <>
