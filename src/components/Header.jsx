@@ -6,7 +6,6 @@ import {
   Stack,
   Collapse,
   Icon,
-  Link,
   Popover,
   PopoverTrigger,
   PopoverContent,
@@ -14,6 +13,7 @@ import {
   useBreakpointValue,
   useDisclosure,
 } from "@chakra-ui/react";
+import { Link } from "@chakra-ui/next-js";
 import {
   HamburgerIcon,
   CloseIcon,
@@ -21,18 +21,10 @@ import {
   ChevronRightIcon,
 } from "@chakra-ui/icons";
 import React from "react";
+import { useRouter } from "next/router";
+import ConditionalWrapper from "./ConditionalWrapper";
 
 const NAV_ITEMS = [
-  {
-    label: "Om UV-Kollen",
-    children: [
-      {
-        label: "Öppen källkod",
-        subLabel: "Hjälp till och granska källkoden",
-        href: "#",
-      },
-    ],
-  },
   {
     label: "Vad är UV-index?",
     children: [
@@ -61,6 +53,7 @@ const NAV_ITEMS = [
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const router = useRouter();
 
   return (
     <header>
@@ -96,16 +89,18 @@ export default function WithSubnavigation() {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <Text
-              textAlign={useBreakpointValue({ base: "center", md: "left" })}
-              fontFamily="heading"
-              color={useColorModeValue("gray.800", "white")}
-              fontWeight="bold"
-              letterSpacing="-.06em"
-              fontSize="2xl"
-            >
-              UV-kollen
-            </Text>
+            <ConditionalWrapper condition={router.pathname !== "/"} wrapper={(children) => <Link href="/" _hover={{textDecoration: "none"}}>{children}</Link>}>
+              <Text
+                textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                fontFamily="heading"
+                color={useColorModeValue("gray.800", "white")}
+                fontWeight="bold"
+                letterSpacing="-.06em"
+                fontSize="2xl"
+              >
+                UV-kollen
+              </Text>
+            </ConditionalWrapper>
 
             <Flex display={{ base: "none", md: "flex" }} ml={10}>
               <DesktopNav />
