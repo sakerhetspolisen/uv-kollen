@@ -6,10 +6,7 @@ import cityPaths from "@/assets/cityPaths";
 import citiesFull from "@/assets/cityCoord";
 
 export async function getServerSideProps(context) {
-  context.res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=3600',
-  );
+  context.res.setHeader("Cache-Control", "public, s-maxage=3600");
   const { cityPath } = context.query;
   const index = cityPaths.indexOf(decodeURI(cityPath));
   if (index !== -1) {
@@ -18,9 +15,12 @@ export async function getServerSideProps(context) {
     const data = await fetch(url);
     const externalUVData = await data.json();
     const maxUVTime = new Date(externalUVData.uv_max_time).getHours() + 1;
-    const sunsetTime = new Date(
+    const sunsetHours = new Date(externalUVData.sun_info.sun_times.sunset)
+      .getHours()
+      .toString();
+    const sunsetMinutes = `0${new Date(
       externalUVData.sun_info.sun_times.sunset
-    ).getHours();
+    ).getMinutes()}`.slice(-2);
     return {
       props: {
         cityName: locality,
@@ -28,8 +28,8 @@ export async function getServerSideProps(context) {
           uv: (Math.round(externalUVData.uv * 100) / 100).toString(),
           maxUV: (Math.round(externalUVData.uv_max * 100) / 100).toString(),
           maxUVAt: maxUVTime,
-          sunsetAt: sunsetTime,
-        }
+          sunsetAt: `${sunsetHours}:${sunsetMinutes}`,
+        },
       },
     };
   }
@@ -43,8 +43,10 @@ export default function City({ cityName, data }) {
     uv: 0,
     maxUV: 0,
     maxUVAt: "",
-    sunsetAt: ""
-  })
+    sunsetAt: "",
+    sunsetPassed: false,
+    maxUVPassed: false,
+  });
   const [uvDisplay, setUVDisplay] = useState(["", ""]);
   const [bg, setBg] = useState("white");
   const [fontColor, setFontColor] = useState("white");
@@ -66,10 +68,30 @@ export default function City({ cityName, data }) {
 
   useEffect(() => {
     if (data) {
-      setUVData(data)
+      const timesPassed = {
+        sunsetPassed: false,
+        maxUVPassed: false,
+      };
+      const d = new Date();
+      const localTime = d.getTime();
+      const localOffset = d.getTimezoneOffset() * 60000;
+      const utc = localTime + localOffset;
+      const offset = 2; // UTC of Stockholm, Sweden is +2
+      const se = utc + 3600000 * offset;
+      const swedenTimeNow = new Date(se);
+
+      if (data.maxUVAt < swedenTimeNow.getHours()) {
+        timesPassed.maxUVPassed = true
+      }
+      if (parseInt(data.sunsetAt.slice(0,2),10) < swedenTimeNow.getHours()) {
+        if (parseInt(data.sunsetAt.slice(3,5),10) < swedenTimeNow.getMinutes()) {
+          timesPassed.sunsetPassed = true
+        }
+      }
+      setUVData({ ...data, ...timesPassed });
       setUVDisplay([data.uv.slice(0, 1), data.uv.slice(1)]);
-      setBg(bgs[parseInt(data.uv.slice(0, 1),10)]);
-      setFontColor(parseInt(data.uv.slice(0, 1),10) < 2 ? "white" : "black");
+      setBg(bgs[parseInt(data.uv.slice(0, 1), 10)]);
+      setFontColor(parseInt(data.uv.slice(0, 1), 10) < 2 ? "white" : "black");
     }
   }, [data]);
 
@@ -173,15 +195,29 @@ export default function City({ cityName, data }) {
               <Text fontWeight="600" fontSize="xl" mb="2">
                 Prognos
               </Text>
-              <Box display="flex" alignItems="center">
+              <Box
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+              >
                 <Text fontWeight="500">
-                  Dagens högsta UV-index är{" "}
+                  Dagens högsta UV-index{" "}
+                  {uvData.maxUVPassed ? "var" : "är"}{" "}
                   <Text as="span" fontSize="lg" fontWeight="bold">
                     {uvData.maxUV}
                   </Text>{" "}
                   klockan{" "}
                   <Text as="span" fontSize="lg" fontWeight="bold">
                     {uvData.maxUVAt}:00
+                  </Text>
+                  .
+                </Text>
+                <Text fontWeight="500">
+                  Solen{" "}
+                  {uvData.sunsetPassed ? "gick" : "går"}{" "}
+                  ner klockan{" "}
+                  <Text as="span" fontSize="lg" fontWeight="bold">
+                    {uvData.sunsetAt}
                   </Text>
                   .
                 </Text>
