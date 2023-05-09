@@ -114,7 +114,7 @@ export default function City({ cityName, data }) {
           pt="50px"
           display="flex"
           justifyContent="center"
-          minHveight="100vh"
+          minHeight="100vh"
           alignItems="center"
           color={fontColor}
           bg={bg}
