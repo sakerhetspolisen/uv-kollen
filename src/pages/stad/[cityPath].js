@@ -203,11 +203,11 @@ export default function City({ cityName, data }) {
                 <Text fontWeight="500">
                   Dagens högsta UV-index{" "}
                   {uvData.maxUVPassed ? "var" : "är"}{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold">
+                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUV">
                     {uvData.maxUV}
                   </Text>{" "}
                   klockan{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold">
+                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUVAt">
                     {uvData.maxUVAt}:00
                   </Text>
                   .
