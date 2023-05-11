@@ -8,16 +8,15 @@ import citiesFull from "@/assets/cityCoord";
 export async function getServerSideProps(context) {
   context.res.setHeader("Cache-Control", "public, s-maxage=3600");
   const { cityPath } = context.query;
-  const index = cityPaths.indexOf(decodeURI(cityPath));
+  const index = cityPaths.indexOf(decodeURI(cityPath).toLowerCase());
   if (index !== -1) {
     const { lat, long, locality } = citiesFull[index];
     const url = `${process.env.API_URL}?lat=${lat}&lng=${long}`;
     const data = await fetch(url);
     const externalUVData = await data.json();
+
     const maxUVTime = new Date(externalUVData.uv_max_time).getHours() + 1;
-    const sunsetHours = new Date(externalUVData.sun_info.sun_times.sunset)
-      .getHours()
-      .toString();
+    const sunsetHours = (new Date(externalUVData.sun_info.sun_times.sunset).getHours() + 2).toString();
     const sunsetMinutes = `0${new Date(
       externalUVData.sun_info.sun_times.sunset
     ).getMinutes()}`.slice(-2);
