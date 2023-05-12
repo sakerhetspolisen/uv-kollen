@@ -81,7 +81,16 @@ export default function App({ Component, pageProps }) {
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f8b500" />
         <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#e47228" />
+        <meta
+          name="theme-color"
+          content="#ffffff"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#1A202C"
+          media="(prefers-color-scheme: dark)"
+        />
       </Head>
       <ChakraProvider theme={theme}>
         <Header />
