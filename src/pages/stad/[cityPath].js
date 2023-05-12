@@ -1,7 +1,6 @@
 import { Box, Heading, Text } from "@chakra-ui/react";
 import { NextSeo } from "next-seo";
 import React, { useEffect, useState } from "react";
-import Head from "next/head";
 import cityPaths from "@/assets/cityPaths";
 import citiesFull from "@/assets/cityCoord";
 
@@ -16,7 +15,9 @@ export async function getServerSideProps(context) {
     const externalUVData = await data.json();
 
     const maxUVTime = new Date(externalUVData.uv_max_time).getHours() + 1;
-    const sunsetHours = (new Date(externalUVData.sun_info.sun_times.sunset).getHours() + 2).toString();
+    const sunsetHours = (
+      new Date(externalUVData.sun_info.sun_times.sunset).getHours() + 2
+    ).toString();
     const sunsetMinutes = `0${new Date(
       externalUVData.sun_info.sun_times.sunset
     ).getMinutes()}`.slice(-2);
@@ -80,11 +81,13 @@ export default function City({ cityName, data }) {
       const swedenTimeNow = new Date(se);
 
       if (data.maxUVAt < swedenTimeNow.getHours()) {
-        timesPassed.maxUVPassed = true
+        timesPassed.maxUVPassed = true;
       }
-      if (parseInt(data.sunsetAt.slice(0,2),10) < swedenTimeNow.getHours()) {
-        if (parseInt(data.sunsetAt.slice(3,5),10) < swedenTimeNow.getMinutes()) {
-          timesPassed.sunsetPassed = true
+      if (parseInt(data.sunsetAt.slice(0, 2), 10) < swedenTimeNow.getHours()) {
+        if (
+          parseInt(data.sunsetAt.slice(3, 5), 10) < swedenTimeNow.getMinutes()
+        ) {
+          timesPassed.sunsetPassed = true;
         }
       }
       setUVData({ ...data, ...timesPassed });
@@ -106,30 +109,6 @@ export default function City({ cityName, data }) {
           },
         ]}
       />
-      <Head>
-        <meta name="google" content="notranslate" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f8b500" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#e47228" />
-      </Head>
       <main>
         <Box
           pt="50px"
@@ -200,8 +179,7 @@ export default function City({ cityName, data }) {
                 flexDirection="column"
               >
                 <Text fontWeight="500">
-                  Dagens högsta UV-index{" "}
-                  {uvData.maxUVPassed ? "var" : "är"}{" "}
+                  Dagens högsta UV-index {uvData.maxUVPassed ? "var" : "är"}{" "}
                   <Text as="span" fontSize="lg" fontWeight="bold" id="maxUV">
                     {uvData.maxUV}
                   </Text>{" "}
@@ -212,9 +190,7 @@ export default function City({ cityName, data }) {
                   .
                 </Text>
                 <Text fontWeight="500">
-                  Solen{" "}
-                  {uvData.sunsetPassed ? "gick" : "går"}{" "}
-                  ner klockan{" "}
+                  Solen {uvData.sunsetPassed ? "gick" : "går"} ner klockan{" "}
                   <Text as="span" fontSize="lg" fontWeight="bold">
                     {uvData.sunsetAt}
                   </Text>

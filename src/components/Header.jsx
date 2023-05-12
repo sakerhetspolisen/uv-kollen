@@ -89,7 +89,14 @@ export default function WithSubnavigation() {
             />
           </Flex>
           <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
-            <ConditionalWrapper condition={router.pathname !== "/"} wrapper={(children) => <Link href="/" _hover={{textDecoration: "none"}}>{children}</Link>}>
+            <ConditionalWrapper
+              condition={router.pathname !== "/"}
+              wrapper={(children) => (
+                <Link href="/" _hover={{ textDecoration: "none" }}>
+                  {children}
+                </Link>
+              )}
+            >
               <Text
                 textAlign={useBreakpointValue({ base: "center", md: "left" })}
                 fontFamily="heading"
@@ -116,7 +123,7 @@ export default function WithSubnavigation() {
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
-          <MobileNav />
+          <MobileNav isHome={router.pathname === "/"} />
         </Collapse>
       </Box>
     </header>
@@ -207,12 +214,13 @@ const DesktopSubNav = ({ label, href, subLabel }) => (
   </Link>
 );
 
-const MobileNav = () => (
+const MobileNav = ({ isHome }) => (
   <Stack
     bg={useColorModeValue("white", "gray.800")}
     p={4}
     display={{ md: "none" }}
   >
+    {!isHome && <MobileNavItem label="Hem" href="/" />}
     {NAV_ITEMS.map((navItem) => (
       <MobileNavItem key={navItem.label} {...navItem} />
     ))}

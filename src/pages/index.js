@@ -1,4 +1,3 @@
-import Head from "next/head";
 import {
   Box,
   Button,
@@ -30,30 +29,6 @@ export default function Home() {
           },
         ]}
       />
-      <Head>
-        <meta name="google" content="notranslate" />
-        <link
-          rel="apple-touch-icon"
-          sizes="180x180"
-          href="/apple-touch-icon.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="32x32"
-          href="/favicon-32x32.png"
-        />
-        <link
-          rel="icon"
-          type="image/png"
-          sizes="16x16"
-          href="/favicon-16x16.png"
-        />
-        <link rel="manifest" href="/site.webmanifest" />
-        <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f8b500" />
-        <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#e47228" />
-      </Head>
       <main>
         <Box
           width="100%"
@@ -208,7 +183,9 @@ export default function Home() {
 const HomeForm = () => {
   const router = useRouter();
   const [cityPath, setCityPath] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const onSubmit = (e) => {
+    setIsLoading(true);
     e.preventDefault();
     router.push(`/stad/${cityPath}`);
   };
@@ -230,6 +207,7 @@ const HomeForm = () => {
           color={useColorModeValue("white", "black")}
           _hover={{ bg: useColorModeValue("gray.900", "gray.100") }}
           type="submit"
+          isLoading={isLoading}
         >
           Beräkna
         </Button>
