@@ -45,6 +45,15 @@ export default function App({ Component, pageProps }) {
           description:
             "Med UV-Kollen ser du ett detaljerat UV-index för alla svenska städer i realtid. Det är helt gratis, för alltid.",
           siteName: "UV-Kollen",
+          images: [
+            {
+              url: "/og-image.png",
+              width: 1200,
+              height: 630,
+              alt: "UV-kollen thumbnail",
+              type: "image/png",
+            },
+          ],
         }}
         twitter={{
           handle: "summary",
@@ -81,7 +90,16 @@ export default function App({ Component, pageProps }) {
         <link rel="manifest" href="/site.webmanifest" />
         <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#f8b500" />
         <meta name="msapplication-TileColor" content="#da532c" />
-        <meta name="theme-color" content="#e47228" />
+        <meta
+          name="theme-color"
+          content="#ffffff"
+          media="(prefers-color-scheme: light)"
+        />
+        <meta
+          name="theme-color"
+          content="#1A202C"
+          media="(prefers-color-scheme: dark)"
+        />
       </Head>
       <ChakraProvider theme={theme}>
         <Header />
