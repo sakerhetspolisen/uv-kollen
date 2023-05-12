@@ -45,6 +45,15 @@ export default function App({ Component, pageProps }) {
           description:
             "Med UV-Kollen ser du ett detaljerat UV-index för alla svenska städer i realtid. Det är helt gratis, för alltid.",
           siteName: "UV-Kollen",
+          images: [
+            {
+              url: "/og-image.png",
+              width: 1200,
+              height: 630,
+              alt: "UV-kollen thumbnail",
+              type: "image/png",
+            },
+          ],
         }}
         twitter={{
           handle: "summary",
