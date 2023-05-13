@@ -1,16 +1,17 @@
 import {
   Box,
-  Input,
   InputGroup,
   InputLeftElement,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-  Stack,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import {
+  AutoComplete,
+  AutoCompleteInput,
+  AutoCompleteItem,
+  AutoCompleteList,
+} from "@choc-ui/chakra-autocomplete";
+import React, { useState } from "react";
 
 const LocationIcon = ({ fill }) => (
   <svg
@@ -24,95 +25,97 @@ const LocationIcon = ({ fill }) => (
   </svg>
 );
 
-export default function CityAutofill({ setCityPath }) {
-  const [value, setValue] = useState("");
-  const [suggestions, setSuggestions] = useState([]);
-  const inputRef = useRef();
-  const popoverRef = useRef();
+const HouseIcon = ({ fill }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    fill={fill}
+    viewBox="0 0 16 16"
+  >
+    <path d="M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z" />
+  </svg>
+);
 
-  useEffect(() => {
-    if (inputRef.current && popoverRef.current) {
-      popoverRef.current.style.width = `${inputRef.current.offsetWidth}px`;
-    }
-  }, [inputRef.current, popoverRef.current]);
+export default function CitySuggest({ setCityPath, formRef }) {
+  const [suggestions, setSuggestions] = useState([
+    ["Stockholm", "Stockholm, Stockholm", "stockholm"],
+    ["Göteborg", "Göteborg, Västra Götaland", "göteborg"],
+    ["Malmö", "Malmö, Skåne", "malmö"],
+  ]);
 
-  useEffect(() => {
+  async function handleInputChange(e) {
+    let suggestData = [];
+    const { value } = e.target;
     if (value.length > 2) {
-      fetch(`/api/suggest?q=${value}`)
-        .then((res) => res.json())
-        .then((res) => setSuggestions(res.res));
-    } else {
-      setSuggestions([]);
+      const data = await fetch(`/api/suggest?q=${encodeURIComponent(value)}`);
+      suggestData = await data.json();
     }
-  }, [value, setSuggestions]);
+    setSuggestions(suggestData);
+  }
+
+  const handleSuggestionClick = (path) => {
+    setCityPath(path);
+    formRef.current.requestSubmit();
+  };
 
   return (
-    <Popover
-      placement="bottom-start"
-      isOpen={suggestions.length > 0}
-      initialFocusRef={inputRef}
+    <AutoComplete
+      openOnFocus
+      flexShrink={1}
+      emptyState={
+        <Text textAlign="center" opacity=".5">
+          Du verkar ha uppfunnit en ny stad :)
+        </Text>
+      }
+      shouldRenderSuggestions={(val) => val.length > 2}
+      onSelectOption={(option) => handleSuggestionClick(option.item.value)}
     >
-      <PopoverTrigger>
-        <InputGroup size="lg" mx={[0, 2]} my={2} flexShrink={1}>
-          <InputLeftElement
-            py={8}
-            pointerEvents="none"
-            // eslint-disable-next-line react/no-children-prop
-            children={
-              <LocationIcon fill={useColorModeValue("#fbd87c", "#87540b")} />
-            }
-          />
-          <Input
-            placeholder="ex. Helsingborg"
-            bg={useColorModeValue("black", "white")}
-            color={useColorModeValue("white", "black")}
-            borderColor="whiteAlpha.500"
-            py={8}
-            _placeholder={{ color: "yellow.500" }}
-            _hover={{ borderColor: "whiteAlpha.700" }}
-            required
-            focus="true"
-            onChange={(e) => {
-              setValue(e.target.value);
-              setCityPath(
-                e.target.value.trim().toLowerCase().replaceAll(" ", "-")
-              );
-            }}
-            value={value}
-            ref={inputRef}
-          />
-        </InputGroup>
-      </PopoverTrigger>
-      <PopoverContent
-        border={0}
-        boxShadow="xl"
-        bg={useColorModeValue("gray.800", "gray.100")}
-        p={2}
-        rounded="md"
-        mt={-2}
-        ref={popoverRef}
-      >
-        <Stack>
-          {suggestions.map((sugg) => (
-            <Box
-              key={sugg[2]}
-              bg="transparent"
-              _hover={{ bg: useColorModeValue("gray.700", "gray.200") }}
-              color={useColorModeValue("white", "black")}
-              p={2}
-              rounded="md"
-              cursor="pointer"
-              onClick={() => {
-                setValue(sugg[0]);
-                setCityPath(sugg[2]);
-              }}
-            >
-              <Text fontWeight="600">{sugg[0]}</Text>
-              <Text>{sugg[1]}</Text>
+      <InputGroup size="lg">
+        <InputLeftElement
+          py={8}
+          pointerEvents="none"
+          // eslint-disable-next-line react/no-children-prop
+          children={
+            <LocationIcon fill={useColorModeValue("#fbd87c", "#87540b")} />
+          }
+        />
+        <AutoCompleteInput
+          onChange={(e) => handleInputChange(e)}
+          placeholder="Börja skriva en stad..."
+          bg={useColorModeValue("black", "white")}
+          color={useColorModeValue("white", "black")}
+          borderColor="whiteAlpha.500"
+          py={8}
+          _placeholder={{ color: "yellow.500" }}
+          _hover={{ borderColor: "whiteAlpha.700" }}
+          required
+          focus="true"
+        />
+      </InputGroup>
+      <AutoCompleteList mt={0}>
+        {suggestions.map((city) => (
+          <AutoCompleteItem
+            key={city[2]}
+            value={city[2]}
+            alignItems="center"
+            whiteSpace="nowrap"
+            label={city[0]}
+          >
+            <Box ml={2}>
+              <HouseIcon fill={useColorModeValue("#000", "#fff")} />
             </Box>
-          ))}
-        </Stack>
-      </PopoverContent>
-    </Popover>
+            <Box display="flex" flexDir="column" ml="3">
+              <Text fontWeight="600" as="span">
+                {city[0]}
+              </Text>
+              <Text as="span" fontSize="sm">
+                {city[1]}
+              </Text>
+            </Box>
+          </AutoCompleteItem>
+        ))}
+      </AutoCompleteList>
+    </AutoComplete>
   );
 }

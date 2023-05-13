@@ -10,18 +10,15 @@ export default function handler(req, res) {
     for (let i = 0; i < citySearchList.length; i += 1) {
       if (matches.length < 6) {
         if (
-          citySearchList[i].startsWith(
-            query.toLowerCase().replaceAll(" ", "")
-          ) &&
-          citySearchList[i] !== query.toLowerCase().replaceAll(" ", "")
+          citySearchList[i].startsWith(query.toLowerCase().replaceAll(" ", ""))
         ) {
-          matches.push([...citiesFull[i],cityPaths[i]]);
+          matches.push([...citiesFull[i], cityPaths[i]]);
         }
       } else {
-        return res.status(200).json({ res: matches.slice(0, 4) });
+        return res.status(200).json(matches.slice(0, 4));
       }
     }
-    return res.status(200).json({ res: matches.slice(0, 4) });
+    return res.status(200).json(matches.slice(0, 4));
   }
-  return res.status(405)
+  return res.status(405);
 }
