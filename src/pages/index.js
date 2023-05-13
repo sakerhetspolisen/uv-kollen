@@ -12,9 +12,9 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo } from "next-seo";
+import dynamic from "next/dynamic";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
-import dynamic from "next/dynamic";
 
 export default function Home() {
   return (
