@@ -82,7 +82,7 @@ export default function CitySuggest({ setCityPath, formRef }) {
         />
         <AutoCompleteInput
           onChange={(e) => handleInputChange(e)}
-          placeholder="Börja skriv en stad..."
+          placeholder="Börja skriva en stad..."
           bg={useColorModeValue("black", "white")}
           color={useColorModeValue("white", "black")}
           borderColor="whiteAlpha.500"
