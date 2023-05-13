@@ -4,31 +4,22 @@ import React, { useEffect, useState } from "react";
 import cityPaths from "@/assets/cityPaths";
 import citiesFull from "@/assets/cityCoord";
 
+const toTwoDecimals = (str) => Number.parseFloat(str).toFixed(2);
+
 export async function getServerSideProps(context) {
   context.res.setHeader("Cache-Control", "public, s-maxage=3600");
   const { cityPath } = context.query;
   const index = cityPaths.indexOf(decodeURI(cityPath).toLowerCase());
   if (index !== -1) {
     const { lat, long, locality } = citiesFull[index];
-    const url = `${process.env.API_URL}?lat=${lat}&lng=${long}`;
+    const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly,daily,alerts&units=metric&lang=sv&appid=${process.env.API_KEY}`;
     const data = await fetch(url);
-    const externalUVData = await data.json();
-
-    const maxUVTime = new Date(externalUVData.uv_max_time).getHours() + 1;
-    const sunsetHours = (
-      new Date(externalUVData.sun_info.sun_times.sunset).getHours() + 2
-    ).toString();
-    const sunsetMinutes = `0${new Date(
-      externalUVData.sun_info.sun_times.sunset
-    ).getMinutes()}`.slice(-2);
+    const uvData = await data.json();
     return {
       props: {
         cityName: locality,
         data: {
-          uv: (Math.round(externalUVData.uv * 100) / 100).toString(),
-          maxUV: (Math.round(externalUVData.uv_max * 100) / 100).toString(),
-          maxUVAt: maxUVTime,
-          sunsetAt: `${sunsetHours}:${sunsetMinutes}`,
+          uv: toTwoDecimals(uvData.current.uvi),
         },
       },
     };
@@ -68,7 +59,7 @@ export default function City({ cityName, data }) {
 
   useEffect(() => {
     if (data) {
-      const timesPassed = {
+      /* const timesPassed = {
         sunsetPassed: false,
         maxUVPassed: false,
       };
@@ -80,6 +71,7 @@ export default function City({ cityName, data }) {
       const se = utc + 3600000 * offset;
       const swedenTimeNow = new Date(se);
 
+      
       if (data.maxUVAt < swedenTimeNow.getHours()) {
         timesPassed.maxUVPassed = true;
       }
@@ -89,8 +81,8 @@ export default function City({ cityName, data }) {
         ) {
           timesPassed.sunsetPassed = true;
         }
-      }
-      setUVData({ ...data, ...timesPassed });
+      } */
+      setUVData(data);
       setUVDisplay([data.uv.slice(0, 1), data.uv.slice(1)]);
       setBg(bgs[parseInt(data.uv.slice(0, 1), 10)]);
       setFontColor(parseInt(data.uv.slice(0, 1), 10) < 2 ? "white" : "black");
@@ -162,42 +154,49 @@ export default function City({ cityName, data }) {
                 just nu.
               </Heading>
             </Heading>
-            <Box
-              maxWidth="500px"
-              width="100%"
-              bg="rgba(255,255,255,.2)"
-              rounded="md"
-              mt={12}
-              p={6}
-            >
-              <Text fontWeight="600" fontSize="xl" mb="2">
-                Prognos
-              </Text>
+            {uvData.maxUV > 0 && (
               <Box
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
+                maxWidth="500px"
+                width="100%"
+                bg="rgba(255,255,255,.2)"
+                rounded="md"
+                mt={12}
+                p={6}
               >
-                <Text fontWeight="500">
-                  Dagens högsta UV-index {uvData.maxUVPassed ? "var" : "är"}{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUV">
-                    {uvData.maxUV}
-                  </Text>{" "}
-                  klockan{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUVAt">
-                    {uvData.maxUVAt}:00
-                  </Text>
-                  .
+                <Text fontWeight="600" fontSize="xl" mb="2">
+                  Prognos
                 </Text>
-                <Text fontWeight="500">
-                  Solen {uvData.sunsetPassed ? "gick" : "går"} ner klockan{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold">
-                    {uvData.sunsetAt}
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  flexDirection="column"
+                >
+                  <Text fontWeight="500">
+                    Dagens högsta UV-index {uvData.maxUVPassed ? "var" : "är"}{" "}
+                    <Text as="span" fontSize="lg" fontWeight="bold" id="maxUV">
+                      {uvData.maxUV}
+                    </Text>{" "}
+                    klockan{" "}
+                    <Text
+                      as="span"
+                      fontSize="lg"
+                      fontWeight="bold"
+                      id="maxUVAt"
+                    >
+                      {uvData.maxUVAt}:00
+                    </Text>
+                    .
                   </Text>
-                  .
-                </Text>
+                  <Text fontWeight="500">
+                    Solen {uvData.sunsetPassed ? "gick" : "går"} ner klockan{" "}
+                    <Text as="span" fontSize="lg" fontWeight="bold">
+                      {uvData.sunsetAt}
+                    </Text>
+                    .
+                  </Text>
+                </Box>
               </Box>
-            </Box>
+            )}
             <Box
               maxWidth="500px"
               width="100%"
