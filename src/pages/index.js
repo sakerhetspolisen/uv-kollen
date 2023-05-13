@@ -9,7 +9,7 @@ import {
   useColorModeValue,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo } from "next-seo";
 import CityAutofill from "@/components/CityAutofill.jsx";
@@ -184,16 +184,19 @@ const HomeForm = () => {
   const router = useRouter();
   const [cityPath, setCityPath] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const onSubmit = (e) => {
-    setIsLoading(true);
-    e.preventDefault();
-    router.push(`/stad/${cityPath}`);
-  };
+  const formRef = useRef();
+
+  useEffect(() => {
+    if (cityPath !== "") {
+      setIsLoading(true);
+      router.push(`/stad/${encodeURIComponent(cityPath)}`);
+    }
+  }, [cityPath]);
 
   return (
-    <form onSubmit={(e) => onSubmit(e)}>
-      <Box display={["block", "flex"]}>
-        <CityAutofill setCityPath={setCityPath} />
+    <form ref={formRef} noValidate onSubmit={(e) => e.preventDefault()}>
+      <Box display={["block", "flex"]} alignItems="center">
+        <CityAutofill setCityPath={setCityPath} formRef={formRef} />
         <Button
           size="lg"
           mx={[0, 2]}
