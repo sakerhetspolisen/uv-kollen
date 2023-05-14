@@ -15,6 +15,7 @@ export async function getServerSideProps(context) {
     const url = `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${long}&exclude=minutely,hourly,daily,alerts&units=metric&lang=sv&appid=${process.env.API_KEY}`;
     const data = await fetch(url);
     const uvData = await data.json();
+    console.log(uvData);
     return {
       props: {
         cityName: locality,
