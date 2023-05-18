@@ -194,12 +194,29 @@ export default function City({ cityName, data }) {
                   Dygnsprognos
                 </Text>
                 <Text fontWeight="500">
-                  Det högsta UV-indexet kommande dygnet kommer att vara{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUV">
+                  Det högsta UV-indexet under det kommande dygnet kommer att
+                  vara{" "}
+                  <Text
+                    as="span"
+                    fontSize="lg"
+                    fontWeight="bold"
+                    id="maxUV"
+                    display="inline-block"
+                    bg="rgba(255,255,255,0.2)"
+                    px={1}
+                  >
                     {uvData.maxUV[1]}
                   </Text>{" "}
                   klockan{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold" id="maxUVAt">
+                  <Text
+                    as="span"
+                    fontSize="lg"
+                    fontWeight="bold"
+                    id="maxUVAt"
+                    display="inline-block"
+                    bg="rgba(255,255,255,0.2)"
+                    px={1}
+                  >
                     {uvData.maxUV[0]}:00
                   </Text>
                   .
@@ -207,7 +224,14 @@ export default function City({ cityName, data }) {
                 <Text fontWeight="500">
                   Idag {uvData.sunsetHasPassed ? "gick" : "går"} solen ner
                   klockan{" "}
-                  <Text as="span" fontSize="lg" fontWeight="bold">
+                  <Text
+                    as="span"
+                    fontSize="lg"
+                    fontWeight="bold"
+                    display="inline-block"
+                    bg="rgba(255,255,255,0.2)"
+                    px={1}
+                  >
                     {uvData.sunset}
                   </Text>
                   .
