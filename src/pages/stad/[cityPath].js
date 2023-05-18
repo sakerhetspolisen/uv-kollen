@@ -69,18 +69,18 @@ export default function City({ cityName, data }) {
   const [fontColor, setFontColor] = useState("white");
 
   const bgs = [
-    "radial-gradient(circle at bottom center, #972f52 0%, #142143 60%, #0e0e0e 100%)",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(24,30,82,.9) 60%, #191f4e)",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
-    "radial-gradient(circle at bottom center, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #972f52 0%, #142143 60%, #0e0e0e 100%)",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(24,30,82,.9) 60%, #191f4e)",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
+    "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
   ];
 
   const collapseHourlyUV = (dataHourByHour) => {
@@ -131,7 +131,6 @@ export default function City({ cityName, data }) {
           justifyContent="center"
           minHeight="100vh"
           alignItems="center"
-          color={fontColor}
           bg={bg}
         >
           <Box
@@ -143,7 +142,7 @@ export default function City({ cityName, data }) {
             flexDirection="column"
           >
             <Box maxWidth="500px" width="100%" height="1px" mb={12} />
-            <Heading as="h1" textAlign="center">
+            <Heading as="h1" textAlign="center" color={fontColor}>
               <Heading
                 as="span"
                 display="block"
@@ -184,6 +183,7 @@ export default function City({ cityName, data }) {
               rounded="md"
               mt={12}
               p={6}
+              color="white"
             >
               <Box
                 display="flex"
@@ -335,10 +335,11 @@ export default function City({ cityName, data }) {
             <Box
               maxWidth="500px"
               width="100%"
-              bg="rgba(0,0,0,.2)"
+              bg="rgba(0,0,0,.4)"
               rounded="md"
               mt={4}
               p={6}
+              color="white"
             >
               <Text fontWeight="600" fontSize="xl" mb="2">
                 Tips!
