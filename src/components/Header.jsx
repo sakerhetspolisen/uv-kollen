@@ -105,7 +105,7 @@ export default function WithSubnavigation() {
                 letterSpacing="-.06em"
                 fontSize="2xl"
               >
-                UV-kollen
+                UV-Kollen
               </Text>
             </ConditionalWrapper>
 
