@@ -41,6 +41,7 @@ export async function getServerSideProps(context) {
     return {
       props: {
         cityName: locality,
+        cityPath,
         data: {
           uv: toTwoDecimals(uvData.current.uvi),
           hourly: hourlyUV,
@@ -56,7 +57,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function City({ cityName, data }) {
+export default function City({ cityName, cityPath, data }) {
   const [uvData, setUVData] = useState({
     uv: 0,
     maxUV: ["", 0],
@@ -116,13 +117,14 @@ export default function City({ cityName, data }) {
     <>
       <NextSeo
         title={`UV-index i ${cityName} just nu | UV-Kollen`}
-        description={`Spara UV-kollen som bokmärke på din mobil och dator för att alltid veta UV-indexet i ${cityName}.`}
+        description={`På den här sidan ser du allt om hur solens strålar ter sig i ${cityName} idag. Spara UV-Kollen som bokmärke på din mobil och dator för att alltid veta UV-indexet i ${cityName}.`}
         additionalMetaTags={[
           {
             name: "keywords",
             content: `${cityName.toLowerCase()}, uv-index ${cityName.toLowerCase()}, uv-index ${cityName.toLowerCase()}, uv just nu i ${cityName.toLowerCase()}, strålsäkerhet, solkräm, hur varmt ska det vara, sommar`,
           },
         ]}
+        canonical={`https://www.uvkollen.se/stad/${cityPath}`}
       />
       <main>
         <Box

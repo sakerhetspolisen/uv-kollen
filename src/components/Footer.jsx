@@ -54,7 +54,7 @@ export default function SmallWithLogoLeft() {
           letterSpacing="-.06em"
           fontSize="xl"
         >
-          UV-kollen
+          UV-Kollen
         </Text>
         <Text>
           © {new Date().getFullYear()} Karl Sellergren. Alla rättigheter

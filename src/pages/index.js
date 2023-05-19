@@ -11,17 +11,30 @@ import {
 import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { SunIcon } from "@chakra-ui/icons";
-import { NextSeo } from "next-seo";
+import { NextSeo, SocialProfileJsonLd } from "next-seo";
 import dynamic from "next/dynamic";
+import Head from "next/head";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
 
 export default function Home() {
+  const siteLinksSearchBoxJSONLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: "https://www.uvkollen.se",
+    potentialAction: [
+      {
+        "@type": "SearchAction",
+        target: "https://www.uvkollen.se/stad/{search_term_string}",
+        "query-input": "required name=search_term_string",
+      },
+    ],
+  };
   return (
     <>
       <NextSeo
-        title="Dagens UV-Index i din stad | UV-Kollen"
-        description="Med UV-Kollen ser du ett detaljerat UV-index för alla svenska städer i realtid. Det är helt gratis, för alltid."
+        title="UV-Kollen | Hitta UV-index i alla svenska städer idag"
+        description="Med UV-Kollen ser du ett detaljerat UV-index för alla svenska städer i realtid. Sidan är skapad av en webbutvecklare med mycket tid över. Kolla in den vetja."
         additionalMetaTags={[
           {
             name: "keywords",
@@ -29,7 +42,19 @@ export default function Home() {
               "uv-index, uv just nu, uv-index stockholm, strålsäkerhet, solkräm, hur varmt ska det vara, sommar",
           },
         ]}
+        canonical="https://www.uvkollen.se/"
       />
+      <SocialProfileJsonLd
+        type="Organization"
+        name="UV-Kollen"
+        url="http://www.uvkollen.se"
+        sameAs={["https://twitter.com/uvkollen", "https://mastodon.online/@uv"]}
+      />
+      <Head>
+        <script type="application/ld+json">
+          {JSON.stringify(siteLinksSearchBoxJSONLd)}
+        </script>
+      </Head>
       <main>
         <Box
           width="100%"
@@ -62,7 +87,7 @@ export default function Home() {
                     just nu?
                   </Heading>
                   <Text fontSize="xl" mt={6} textAlign="center">
-                    Skriv in en plats nedan så tar UV-kollen redan på UV-indexet
+                    Skriv in en plats nedan så tar UV-Kollen redan på UV-indexet
                     på den platsen just nu.
                   </Text>
                   <Box mt={6}>
