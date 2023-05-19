@@ -34,7 +34,7 @@ export default function Home() {
     <>
       <NextSeo
         title="UV-Kollen | Hitta UV-index i alla svenska städer idag"
-        description="Med UV-Kollen ser du ett detaljerat UV-index för lla svenska städer i realtid. Sidan är skapad av en webbutvecklare med mycket tid över. Kolla in den vetja."
+        description="Med UV-Kollen ser du ett detaljerat UV-index för alla svenska städer i realtid. Sidan är skapad av en webbutvecklare med mycket tid över. Kolla in den vetja."
         additionalMetaTags={[
           {
             name: "keywords",
