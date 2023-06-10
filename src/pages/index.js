@@ -12,7 +12,6 @@ import { useRouter } from "next/router";
 import React, { useEffect, useRef, useState } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo, SocialProfileJsonLd } from "next-seo";
-import dynamic from "next/dynamic";
 import Head from "next/head";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
@@ -116,10 +115,10 @@ export default function Home() {
             </svg>
           </Box>
         </Box>
-        <Box px={6} py={20} display="flex" justifyContent="center">
+        <Box px={6} pb={60} display="flex" justifyContent="center">
           <Box maxWidth={900} width="100%">
-            <section>
-              <Heading as="h2" mb={6} id="hur-beraknas-uv">
+            <section id="hur-beraknas-uv">
+              <Heading as="h2" mb={6} pt={24}>
                 Hur beräknas ett UV-index?
               </Heading>
               <Text fontSize="lg" lineHeight="1.8">
@@ -144,8 +143,8 @@ export default function Home() {
                 UV-strålningen är som högst.
               </Text>
             </section>
-            <section>
-              <Heading as="h2" mb={6} mt={20} id="hur-fungerar-skalan">
+            <section id="hur-fungerar-skalan">
+              <Heading as="h2" mb={6} pt={24}>
                 Hur fungerar skalan?
               </Heading>
               <Text fontSize="lg" lineHeight="1.8">
@@ -189,8 +188,8 @@ export default function Home() {
                 hudskador från UV-strålning.
               </Text>
             </section>
-            <section>
-              <Heading as="h2" mb={6} mt={20} id="uv-i-sverige">
+            <section id="uv-i-sverige">
+              <Heading as="h2" mb={6} pt={24}>
                 UV-index i Sverige
               </Heading>
               <Text fontSize="lg" lineHeight="1.8">
@@ -200,14 +199,6 @@ export default function Home() {
             </section>
           </Box>
         </Box>
-        <TypeForm
-          id="MruPDpam"
-          customIcon={
-            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" viewBox="0 0 16 16"><path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15Zm0-9.007c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/></svg>'
-          }
-          notificationDays={7}
-          buttonColor="white"
-        />
       </main>
       <Footer />
     </>
@@ -252,10 +243,3 @@ const HomeForm = () => {
     </form>
   );
 };
-
-const TypeForm = dynamic(
-  () => import("@typeform/embed-react").then((mod) => mod.Popover),
-  {
-    ssr: false,
-  }
-);

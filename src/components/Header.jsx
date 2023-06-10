@@ -12,6 +12,7 @@ import {
   useColorModeValue,
   useBreakpointValue,
   useDisclosure,
+  Button,
 } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import {
@@ -46,8 +47,27 @@ const NAV_ITEMS = [
     ],
   },
   {
-    label: "Kontakt",
-    href: "mailto:uvkollen@sellerg.ren",
+    label: "Råd och rekommendationer",
+    href: "/rekommendationer",
+  },
+  {
+    label: "Om UV-Kollen",
+    children: [
+      {
+        label: "Vem ligger bakom?",
+        subLabel: "Om mig och varför UV-Kollen startades",
+        href: "/om",
+      },
+      {
+        label: "Källdata",
+        subLabel: "Svensk väderdata är en central del",
+        href: "/kalldata",
+      },
+      {
+        label: "Kontakt",
+        href: "mailto:uvkollen@sellerg.ren",
+      },
+    ],
   },
 ];
 
@@ -71,9 +91,9 @@ export default function WithSubnavigation() {
           width="100%"
         >
           <Flex
-            flex={{ base: 1, md: "auto" }}
+            flex={{ base: 1, lg: "auto" }}
             ml={{ base: -2 }}
-            display={{ base: "flex", md: "none" }}
+            display={{ base: "flex", lg: "none" }}
           >
             <IconButton
               onClick={onToggle}
@@ -88,7 +108,7 @@ export default function WithSubnavigation() {
               aria-label="Toggle Navigation"
             />
           </Flex>
-          <Flex flex={{ base: 1 }} justify={{ base: "center", md: "start" }}>
+          <Flex flex={{ base: 1 }} justify={{ base: "center", lg: "start" }}>
             <ConditionalWrapper
               condition={router.pathname !== "/"}
               wrapper={(children) => (
@@ -98,7 +118,7 @@ export default function WithSubnavigation() {
               )}
             >
               <Text
-                textAlign={useBreakpointValue({ base: "center", md: "left" })}
+                textAlign={useBreakpointValue({ base: "center", lg: "left" })}
                 fontFamily="heading"
                 color={useColorModeValue("gray.800", "white")}
                 fontWeight="bold"
@@ -109,17 +129,26 @@ export default function WithSubnavigation() {
               </Text>
             </ConditionalWrapper>
 
-            <Flex display={{ base: "none", md: "flex" }} ml={10}>
+            <Flex display={{ base: "none", lg: "flex" }} ml={10}>
               <DesktopNav />
             </Flex>
           </Flex>
 
           <Stack
-            flex={{ base: 1, md: 0 }}
+            flex={{ base: 1, lg: 0 }}
             justify="flex-end"
             direction="row"
             spacing={6}
-          />
+          >
+            <Link
+              href="https://www.paypal.com/paypalme/sellergreen"
+              rel="noindex nofollow"
+            >
+              <Button leftIcon={<HeartIcon />} colorScheme="yellow" size="sm">
+                Sponsra
+              </Button>
+            </Link>
+          </Stack>
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
@@ -160,6 +189,7 @@ const DesktopNav = () => {
               <PopoverContent
                 border={0}
                 boxShadow="xl"
+                mig
                 bg={popoverContentBgColor}
                 p={4}
                 rounded="xl"
@@ -218,7 +248,7 @@ const MobileNav = ({ isHome }) => (
   <Stack
     bg={useColorModeValue("white", "gray.800")}
     p={4}
-    display={{ md: "none" }}
+    display={{ lg: "none" }}
   >
     {!isHome && <MobileNavItem label="Hem" href="/" />}
     {NAV_ITEMS.map((navItem) => (
@@ -279,3 +309,18 @@ const MobileNavItem = ({ label, children, href }) => {
     </Stack>
   );
 };
+
+const HeartIcon = () => (
+  <svg
+    stroke="currentColor"
+    fill="currentColor"
+    strokeWidth="0"
+    viewBox="0 0 512 512"
+    focusable="false"
+    height="1em"
+    width="1em"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+  </svg>
+);
