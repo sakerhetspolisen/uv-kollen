@@ -164,8 +164,8 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
       theme: "dark",
       shared: true,
       x: {
-        formatter(val) {
-          return val ? `${val}:00` : "";
+        formatter(val, dataseries) {
+          return `${hourlyUVData[dataseries.dataPointIndex][0].toString()}:00`;
         },
       },
       y: {
