@@ -8,6 +8,15 @@ function generateSiteMap() {
      <url>
        <loc>https://www.uvkollen.se</loc>
      </url>
+     <url>
+       <loc>https://www.uvkollen.se/rekommendationer</loc>
+     </url>
+     <url>
+       <loc>https://www.uvkollen.se/om</loc>
+     </url>
+     <url>
+       <loc>https://www.uvkollen.se/kalldata</loc>
+     </url>
      ${cityPaths
        .map(
          (path) => `
