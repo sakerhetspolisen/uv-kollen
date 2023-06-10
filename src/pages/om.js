@@ -1,4 +1,4 @@
-import { Box, Heading, Text } from "@chakra-ui/react";
+import { Box, Heading, Text, useColorModeValue } from "@chakra-ui/react";
 import Image from "next/image";
 import React from "react";
 import { NextSeo } from "next-seo";
@@ -30,7 +30,10 @@ export default function About() {
                 width="100%"
                 height="100%"
                 zIndex={1}
-                bg="linear-gradient(185deg, rgba(255,255,255,0) 80%, #fff 90%, #fff)"
+                bg={useColorModeValue(
+                  "linear-gradient(185deg, rgba(255,255,255,0) 80%, #fff 90%, #fff)",
+                  "linear-gradient(185deg, rgba(0,0,0,0) 80%, #1A202C 90%, #1A202C)"
+                )}
               />
               <Image
                 src={imageOfMe}

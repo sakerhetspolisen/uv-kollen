@@ -1,4 +1,11 @@
-import { Box, Grid, Heading, Link, Text } from "@chakra-ui/react";
+import {
+  Box,
+  Grid,
+  Heading,
+  Link,
+  Text,
+  useColorModeValue,
+} from "@chakra-ui/react";
 import React from "react";
 import { NextSeo } from "next-seo";
 
@@ -103,9 +110,12 @@ export default function Recommendations() {
             {recommendations.map((el) => (
               <Box
                 key={el[1]}
-                bg="linear-gradient(45deg, var(--chakra-colors-gray-100), #f4f4f4 20%)"
+                bg={useColorModeValue(
+                  "linear-gradient(45deg, var(--chakra-colors-gray-100), #f4f4f4 20%)",
+                  "linear-gradient(45deg, var(--chakra-colors-gray-800), var(--chakra-colors-gray-900) 20%)"
+                )}
                 borderRadius={10}
-                borderColor="gray.300"
+                borderColor={useColorModeValue("gray.300", "gray.700")}
                 borderWidth={1}
                 p={6}
               >
@@ -116,6 +126,7 @@ export default function Recommendations() {
                   py={1}
                   fontSize="small"
                   borderRadius={20}
+                  color="gray.900"
                 >
                   {labels[el[2]].label}
                 </Box>
