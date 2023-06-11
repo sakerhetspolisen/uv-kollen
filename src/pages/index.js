@@ -1,6 +1,5 @@
 import {
   Box,
-  Button,
   Heading,
   List,
   ListIcon,
@@ -8,8 +7,7 @@ import {
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo, SocialProfileJsonLd } from "next-seo";
 import Head from "next/head";
@@ -57,10 +55,11 @@ export default function Home() {
       <main>
         <Box
           width="100%"
-          bg={`linear-gradient(45deg,${useColorModeValue(
-            "#fceabb",
-            "#7e4411"
-          )},${useColorModeValue("#f8b500", "#9a7300")})`}
+          bg={useColorModeValue(
+            "linear-gradient(#FDC830, transparent), linear-gradient(to top left, #fff, transparent), linear-gradient(to top right, #ff7800, transparent)",
+            "linear-gradient(#536976, transparent), linear-gradient(to top left, #292E49, transparent), linear-gradient(to top right, #292E49, transparent)"
+          )}
+          backgroundBlendMode="screen"
           position="relative"
           style={{ height: "calc(100vh + 96px)" }}
         >
@@ -72,44 +71,55 @@ export default function Home() {
             alignItems="center"
             height="100%"
           >
-            <Box maxWidth={800} mx={[4, 4, 6]}>
+            <Box maxWidth={1300} mx={[4, 4, 6]} mb={20}>
               <Box display="flex" justifyContent="center">
-                <Box maxWidth={520}>
+                <Box>
                   <Heading
                     as="h2"
-                    fontSize={["5xl", "5xl", "6xl"]}
-                    letterSpacing="-.03em"
+                    fontSize={["5xl", "5xl", "5xl", "7xl"]}
+                    letterSpacing="-.05em"
+                    lineHeight={1}
                     textAlign="center"
                   >
-                    Vad är UV-index
-                    <br />
-                    just nu?
+                    Vad är UV-index just nu?
                   </Heading>
-                  <Text fontSize="xl" mt={6} textAlign="center">
-                    Skriv in en plats nedan så tar UV-Kollen redan på UV-indexet
-                    på den platsen just nu.
+                  <Text
+                    fontSize={["lg", "lg", "xl", "2xl"]}
+                    mt={4}
+                    fontWeight="500"
+                    textAlign="center"
+                    maxW={[350, 350, 450, "100%"]}
+                    mx="auto"
+                  >
+                    Skriv in en plats så tar UV-Kollen reda på UV-indexet på den
+                    platsen just nu
                   </Text>
-                  <Box mt={6}>
-                    <HomeForm />
-                  </Box>
-                  <Box>
-                    <Text textAlign="center" fontSize="sm">
-                      Data framtagen i realtid för över 1900 svenska städer.
-                    </Text>
+                  <Box mt={12} display="flex" justifyContent="center">
+                    <Box maxWidth={600} width="100%">
+                      <HomeForm />
+                    </Box>
                   </Box>
                 </Box>
               </Box>
             </Box>
           </Box>
-          <Box position="absolute" bottom={0} width="100%">
+          <Box
+            position="absolute"
+            bottom={0}
+            width="100%"
+            transform={["scaleY(0.4)", "scaleY(0.5)", "scaleY(0.7)", "none"]}
+            transformOrigin="bottom"
+          >
             <svg
               width="100%"
-              height="96px"
+              height="96"
               viewBox="0 0 100 100"
               version="1.1"
               xmlns="http://www.w3.org/2000/svg"
               preserveAspectRatio="none"
               fill={useColorModeValue("white", "#1a202c")}
+              transform="translateX(-50%)"
+              display="relative"
             >
               <path d="M0,0 C16.6666667,66 33.3333333,99 50,99 C66.6666667,99 83.3333333,66 100,0 L100,100 L0,100 L0,0 Z" />
             </svg>
@@ -206,40 +216,10 @@ export default function Home() {
 }
 
 const HomeForm = () => {
-  const router = useRouter();
-  const [cityPath, setCityPath] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
   const formRef = useRef();
-
-  useEffect(() => {
-    if (cityPath !== "") {
-      setIsLoading(true);
-      router.push(`/stad/${encodeURIComponent(cityPath)}`);
-    }
-  }, [cityPath]);
-
   return (
     <form ref={formRef} noValidate onSubmit={(e) => e.preventDefault()}>
-      <Box display={["block", "flex"]} alignItems="center">
-        <CityAutofill setCityPath={setCityPath} formRef={formRef} />
-        <Button
-          size="lg"
-          mx={[0, 2]}
-          my={2}
-          py={8}
-          border="1px solid"
-          borderColor={useColorModeValue("black", "white")}
-          flexShrink={2}
-          bg={useColorModeValue("black", "white")}
-          width="100%"
-          color={useColorModeValue("white", "black")}
-          _hover={{ bg: useColorModeValue("gray.900", "gray.100") }}
-          type="submit"
-          isLoading={isLoading}
-        >
-          Beräkna
-        </Button>
-      </Box>
+      <CityAutofill formRef={formRef} />
     </form>
   );
 };

@@ -1,7 +1,9 @@
 import {
   Box,
+  Button,
   InputGroup,
   InputLeftElement,
+  InputRightElement,
   Text,
   useColorModeValue,
 } from "@chakra-ui/react";
@@ -11,17 +13,19 @@ import {
   AutoCompleteItem,
   AutoCompleteList,
 } from "@choc-ui/chakra-autocomplete";
-import React, { useState } from "react";
+import { useRouter } from "next/router";
+import React, { useEffect, useState } from "react";
 
-const LocationIcon = ({ fill }) => (
+const SearchIcon = ({ fill }) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
-    width="20"
-    height="20"
+    height="28"
+    viewBox="0 0 24 24"
+    width="28"
     fill={fill}
-    viewBox="0 0 16 16"
   >
-    <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
+    <path d="M0 0h24v24H0z" fill="none" />
+    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z" />
   </svg>
 );
 
@@ -37,7 +41,10 @@ const HouseIcon = ({ fill }) => (
   </svg>
 );
 
-export default function CitySuggest({ setCityPath, formRef }) {
+export default function CitySuggest({ formRef }) {
+  const router = useRouter();
+  const [cityPath, setCityPath] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
   const [suggestions, setSuggestions] = useState([
     ["Stockholm", "Stockholm, Stockholm", "stockholm"],
     ["Göteborg", "Göteborg, Västra Götaland", "göteborg"],
@@ -59,10 +66,16 @@ export default function CitySuggest({ setCityPath, formRef }) {
     formRef.current.requestSubmit();
   };
 
+  useEffect(() => {
+    if (cityPath !== "") {
+      setIsLoading(true);
+      router.push(`/stad/${encodeURIComponent(cityPath)}`);
+    }
+  }, [cityPath]);
+
   return (
     <AutoComplete
       openOnFocus
-      flexShrink={1}
       emptyState={
         <Text textAlign="center" opacity=".5">
           Du verkar ha uppfunnit en ny stad :)
@@ -73,25 +86,49 @@ export default function CitySuggest({ setCityPath, formRef }) {
     >
       <InputGroup size="lg">
         <InputLeftElement
-          py={8}
+          display="flex"
+          alignItems="center"
+          height="100%"
           pointerEvents="none"
           // eslint-disable-next-line react/no-children-prop
           children={
-            <LocationIcon fill={useColorModeValue("#fbd87c", "#87540b")} />
+            <SearchIcon fill={useColorModeValue("#fff0de", "#49566f")} />
           }
         />
         <AutoCompleteInput
           onChange={(e) => handleInputChange(e)}
           placeholder="Börja skriva en stad..."
+          fontSize={["md", "lg"]}
           bg={useColorModeValue("black", "white")}
           color={useColorModeValue("white", "black")}
           borderColor="whiteAlpha.500"
           py={8}
-          _placeholder={{ color: "yellow.500" }}
+          _placeholder={{ color: useColorModeValue("gray.200", "#49566f") }}
           _hover={{ borderColor: "whiteAlpha.700" }}
           required
           focus="true"
         />
+        <InputRightElement
+          width="12em"
+          display="flex"
+          alignItems="center"
+          height="100%"
+          pl={20}
+        >
+          <Button
+            size={["md", "lg"]}
+            mx={2}
+            my={2}
+            py={5}
+            colorScheme={useColorModeValue("yellow", "yellow")}
+            flexShrink={2}
+            width="100%"
+            type="submit"
+            isLoading={isLoading}
+          >
+            Beräkna
+          </Button>
+        </InputRightElement>
       </InputGroup>
       <AutoCompleteList mt={0}>
         {suggestions.map((city) => (
