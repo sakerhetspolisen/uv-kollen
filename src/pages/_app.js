@@ -1,3 +1,4 @@
+/* eslint-disable no-var */
 import {
   extendTheme,
   defineStyleConfig,
@@ -5,8 +6,7 @@ import {
 } from "@chakra-ui/react";
 import { Inter } from "next/font/google";
 import { DefaultSeo } from "next-seo";
-import React from "react";
-import { Analytics } from "@vercel/analytics/react";
+import React, { useEffect } from "react";
 import Head from "next/head";
 import Header from "@/components/Header.jsx";
 
@@ -33,7 +33,21 @@ const theme = extendTheme({
   },
 });
 
+const loadAnalytics = async () => {
+  const { init } = await import("@/lib/matomoNext.js");
+  init({
+    url: process.env.NEXT_PUBLIC_MATOMO_URL,
+    siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID,
+    jsTrackerFile: "besokare.js",
+    phpTrackerFile: "besokare.php",
+  });
+};
+
 export default function App({ Component, pageProps }) {
+  useEffect(() => {
+    loadAnalytics();
+  }, []);
+
   return (
     <>
       <DefaultSeo
@@ -92,7 +106,6 @@ export default function App({ Component, pageProps }) {
       <ChakraProvider theme={theme}>
         <Header />
         <Component {...pageProps} />
-        <Analytics />
       </ChakraProvider>
     </>
   );
