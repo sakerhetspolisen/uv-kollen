@@ -64,6 +64,11 @@ const NAV_ITEMS = [
         href: "/kalldata",
       },
       {
+        label: "Öppen källkod",
+        subLabel: "Se hur UV-Kollen är byggt",
+        href: "https://github.com/sakerhetspolisen/uv-kollen",
+      },
+      {
         label: "Kontakt",
         href: "mailto:uvkollen@sellerg.ren",
       },
