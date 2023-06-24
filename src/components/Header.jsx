@@ -189,7 +189,6 @@ const DesktopNav = () => {
               <PopoverContent
                 border={0}
                 boxShadow="xl"
-                mig
                 bg={popoverContentBgColor}
                 p={4}
                 rounded="xl"
