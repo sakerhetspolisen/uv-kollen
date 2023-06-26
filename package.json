@@ -15,7 +15,7 @@
     "@choc-ui/chakra-autocomplete": "^5.1.5",
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
-    "@typeform/embed-react": "^2.23.0",
+    "@typeform/embed-react": "^2.24.0",
     "@vercel/kv": "^0.2.2",
     "apexcharts": "^3.40.0",
     "eslint": "^8.43.0",
