@@ -11,7 +11,7 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
         x: hour[0],
         y: hour[1],
       })),
-      name: "UV",
+      name: "UV-index",
     },
   ];
 
@@ -54,10 +54,13 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
     dataLabels: {
       enabled: false,
     },
+    grid: {
+      borderColor: "rgba(0,0,0,0.4)",
+      strokeDashArray: 5,
+    },
     markers: {
       size: 0,
     },
-    colors: ["#fff"],
     fill: {
       type: "gradient",
       gradient: {
@@ -70,13 +73,13 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
     },
     stroke: {
       curve: "smooth",
-      width: 5,
+      width: 6,
     },
     yaxis: {
       tickAmount: 4,
       labels: {
         style: {
-          colors: useColorModeValue("#fff", "#000"),
+          colors: useColorModeValue("#000", "#fff"),
         },
         formatter(val) {
           return val.toFixed(0);
@@ -95,7 +98,7 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
         rotate: 0,
         rotateAlways: true,
         style: {
-          colors: useColorModeValue("#fff", "#000"),
+          colors: useColorModeValue("#000", "#fff"),
         },
       },
       axisBorder: {
@@ -105,16 +108,17 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
         show: false,
       },
     },
+    colors: ["#000"],
     annotations: {
       yaxis: [
         {
           y: 0,
           borderColor: "transparent",
           label: {
-            borderColor: "#202020",
+            borderColor: "#fff",
             style: {
-              color: "#fff",
-              background: "#202020",
+              color: "#000",
+              background: "#fff",
             },
             text: "Lågt",
           },
@@ -123,10 +127,10 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
           y: 3,
           borderColor: "transparent",
           label: {
-            borderColor: "#202020",
+            borderColor: "#fff",
             style: {
-              color: "#fff",
-              background: "#202020",
+              color: "#000",
+              background: "#fff",
             },
             text: "Måttligt",
           },
@@ -135,10 +139,10 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
           y: 6,
           borderColor: "transparent",
           label: {
-            borderColor: "#202020",
+            borderColor: "#fff",
             style: {
-              color: "#fff",
-              background: "#202020",
+              color: "#000",
+              background: "#fff",
             },
             text: "Högt",
           },
@@ -147,10 +151,10 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
           y: 8,
           borderColor: "transparent",
           label: {
-            borderColor: "#202020",
+            borderColor: "#fff",
             style: {
-              color: "#fff",
-              background: "#202020",
+              color: "#000",
+              background: "#fff",
             },
             text: "Mycket högt",
           },
@@ -161,12 +165,14 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
       text: "",
     },
     tooltip: {
-      theme: "dark",
-      shared: true,
+      theme: "light",
+      shared: false,
+      intersect: false,
+      marker: {
+        show: false,
+      },
       x: {
-        formatter(val, dataseries) {
-          return `${hourlyUVData[dataseries.dataPointIndex][0].toString()}:00`;
-        },
+        show: false,
       },
       y: {
         formatter(val) {
@@ -179,7 +185,7 @@ export default function UVChart({ hourlyUVData, maxUVVal }) {
       horizontalAlign: "right",
       offsetX: -10,
       labels: {
-        colors: useColorModeValue("#000", "#fff"),
+        colors: useColorModeValue("#fff", "#000"),
       },
     },
   };
