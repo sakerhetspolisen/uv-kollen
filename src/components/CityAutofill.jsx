@@ -109,11 +109,12 @@ export default function CitySuggest({ formRef }) {
           focus="true"
         />
         <InputRightElement
-          width="12em"
+          width="8.4em"
           display="flex"
           alignItems="center"
           height="100%"
-          pl={20}
+          pl={2}
+          bg="black"
         >
           <Button
             size={["md", "lg"]}
