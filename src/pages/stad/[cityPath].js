@@ -4,9 +4,19 @@ import React, { useEffect, useState } from "react";
 import dynamic from "next/dynamic";
 import cityPaths from "@/assets/cityPaths";
 import citiesFull from "@/assets/cityCoord";
-import UVChart from "@/components/UVChart";
+import ForecastWidget from "@/features/ForecastWidget";
+import TanningTimeWidget from "@/features/TanningTimeWidget";
+import { TanningProvider } from "@/contexts/tanningContext";
 
 const toTwoDecimals = (str) => Number.parseFloat(str).toFixed(2);
+
+const minUntilMidnight = (dateTimeStr) => {
+  const midnight = new Date();
+  midnight.setHours(24, 0, 0, 0);
+  return Math.floor(
+    (midnight.getTime() - new Date(dateTimeStr).getTime()) / 1000 / 60
+  );
+};
 
 export async function getServerSideProps(context) {
   context.res.setHeader("Cache-Control", "public, s-maxage=3600");
@@ -19,15 +29,20 @@ export async function getServerSideProps(context) {
     const uvData = await data.json();
     const rn = new Date();
 
+    const uv = toTwoDecimals(uvData.current.uvi);
     const hourlyUV = [];
     let maxUV = [undefined, 0];
-    uvData.hourly.splice(24).forEach((hour) => {
+    const start = rn.getMinutes() < 30 ? 0 : 1;
+    uvData.hourly.slice(start, 24 - start).forEach((hour) => {
+      const uvVal = start
+        ? hour.uvi
+        : toTwoDecimals((parseFloat(hour.uvi) + parseFloat(uv)) / 2);
       const d = new Date(hour.dt * 1000).toLocaleString("sv", {
         timeZone: "Europe/Berlin",
       });
-      const el = [d.split(" ")[1].split(":")[0], hour.uvi];
+      const el = [d.split(" ")[1].split(":")[0], uvVal];
       hourlyUV.push(el);
-      if (hour.uvi > maxUV[1]) maxUV = el;
+      if (uvVal > maxUV[1]) maxUV = el;
     });
 
     const sunsetTimeObj = new Date(uvData.current.sunset * 1000);
@@ -44,11 +59,14 @@ export async function getServerSideProps(context) {
         cityName: locality,
         cityPath,
         data: {
-          uv: toTwoDecimals(uvData.current.uvi),
+          uv,
           hourly: hourlyUV,
           maxUV,
           sunset: sunsetTimeReadable,
           sunsetHasPassed,
+          swedishDateTimeStr: rn.toLocaleString("sv", {
+            timeZone: "Europe/Berlin",
+          }),
         },
       },
     };
@@ -66,6 +84,8 @@ export default function City({ cityName, cityPath, data }) {
     hourlyCollapsed: [],
     sunset: "",
     sunsetHasPassed: false,
+    maxUVIsTomorrow: false,
+    swedishDateTimeStr: "",
   });
   const [bg, setBg] = useState("white");
   const [fontColor, setFontColor] = useState("white");
@@ -85,28 +105,12 @@ export default function City({ cityName, cityPath, data }) {
     "radial-gradient(circle at center right, #f88b00 0%, rgba(156,172,255,.4) 60%, rgba(156,172,255,.4))",
   ];
 
-  const collapseHourlyUV = (dataHourByHour) => {
-    const res = [];
-    dataHourByHour.forEach((hour, i) => {
-      if (i > 0 && res[res.length - 1][1] === hour[1]) {
-        if (res[res.length - 1][0].toString().indexOf("-") !== -1) {
-          res[res.length - 1][0] = `${res[res.length - 1][0].split("-")[0]}-${
-            hour[0]
-          }`;
-        } else {
-          res[res.length - 1][0] = `${res[res.length - 1][0]}-${hour[0]}`;
-        }
-      } else {
-        res.push([...hour]);
-      }
-    });
-    return res;
-  };
-
   useEffect(() => {
     if (data) {
       setUVData({
-        hourlyCollapsed: collapseHourlyUV(data.hourly),
+        maxUVIsTomorrow:
+          parseInt(data.maxUV[0], 10) <
+          parseInt(data.swedishDateTimeStr.split(" ")[1].split(":")[0], 10),
         ...data,
       });
       setBg(bgs[parseInt(data.uv.slice(0, 1), 10)]);
@@ -127,247 +131,125 @@ export default function City({ cityName, cityPath, data }) {
         ]}
         canonical={`https://www.uvkollen.se/stad/${cityPath}`}
       />
-      <main>
-        <Box
-          pt="50px"
-          display="flex"
-          justifyContent="center"
-          minHeight="100vh"
-          alignItems="center"
-          bg={bg}
-        >
+      <TanningProvider>
+        <main>
           <Box
-            maxWidth="1100"
-            width="100%"
-            m={6}
+            pt="50px"
             display="flex"
+            justifyContent="center"
+            minHeight="100vh"
             alignItems="center"
-            flexDirection="column"
+            bg={bg}
           >
-            <Box maxWidth="500px" width="100%" height="1px" mb={12} />
-            <Heading as="h1" textAlign="center" color={fontColor}>
-              <Heading
-                as="span"
-                display="block"
-                fontSize="2xl"
-                fontWeight="500"
-                opacity={0.7}
-              >
-                I {cityName} är UV-index
-              </Heading>
-              <Heading as="span" display="block">
-                <Heading as="span" fontSize={["200px", "300px"]} pl={20}>
-                  {uvData.uv.toString().split(".")[0]}
+            <Box
+              maxWidth="1100"
+              width="100%"
+              m={4}
+              display="flex"
+              alignItems="center"
+              flexDirection="column"
+            >
+              <Box maxWidth="500px" width="100%" height="1px" mb={12} />
+              <Heading as="h1" textAlign="center" color={fontColor}>
+                <Heading
+                  as="span"
+                  display="block"
+                  fontSize="2xl"
+                  fontWeight="500"
+                  opacity={0.7}
+                >
+                  I {cityName} är UV-index
+                </Heading>
+                <Heading as="span" display="block">
+                  <Heading as="span" fontSize={["200px", "300px"]} pl={20}>
+                    {uvData.uv.toString().split(".")[0]}
+                  </Heading>
+                  <Heading
+                    as="span"
+                    fontSize="50px"
+                    fontWeight="900"
+                    ml={-2}
+                    opacity={0.5}
+                  >
+                    .{uvData.uv.toString().split(".")[1] || "00"}
+                  </Heading>
                 </Heading>
                 <Heading
                   as="span"
-                  fontSize="50px"
-                  fontWeight="900"
-                  ml={-2}
-                  opacity={0.5}
+                  display="block"
+                  fontSize="2xl"
+                  fontWeight="500"
+                  opacity={0.7}
                 >
-                  .{uvData.uv.toString().split(".")[1] || "00"}
+                  just nu.
                 </Heading>
               </Heading>
-              <Heading
-                as="span"
-                display="block"
-                fontSize="2xl"
-                fontWeight="500"
-                opacity={0.7}
-              >
-                just nu.
-              </Heading>
-            </Heading>
-            <Box
-              maxWidth="500px"
-              width="100%"
-              bg="rgba(0,0,0,.4)"
-              rounded="md"
-              mt={12}
-              p={6}
-              color="white"
-            >
+              <Box mt={12} width="100%" maxWidth="500px">
+                <TanningTimeWidget
+                  currentUVIndex={uvData.uv}
+                  uvHourByHour={uvData.hourly}
+                  minUntilMidnight={minUntilMidnight(uvData.swedishDateTimeStr)}
+                />
+              </Box>
+              <Box mt={4} width="100%" maxWidth="500px">
+                <SPFAnalysis />
+              </Box>
+              <Box mt={4}>
+                <ForecastWidget
+                  maxUV={{
+                    time: uvData.maxUV[0],
+                    value: uvData.maxUV[1],
+                    isTomorrow: uvData.maxUVIsTomorrow,
+                  }}
+                  sunsetTime={{
+                    time: uvData.sunset,
+                    hasPassed: uvData.sunsetHasPassed,
+                  }}
+                  uvHourByHour={uvData.hourly}
+                />
+              </Box>
               <Box
-                display="flex"
-                justifyContent="center"
-                flexDirection="column"
+                maxWidth="500px"
+                width="100%"
+                bg="rgba(0,0,0,.4)"
+                rounded="md"
+                mt={4}
+                p={6}
+                color="white"
               >
                 <Text fontWeight="600" fontSize="xl" mb="2">
-                  Dygnsprognos
+                  Tips!
                 </Text>
-                <Text fontWeight="500">
-                  Det högsta UV-indexet under det kommande dygnet kommer att
-                  vara{" "}
-                  <Text
-                    as="span"
-                    fontSize="lg"
-                    fontWeight="bold"
-                    id="maxUV"
-                    display="inline-block"
-                    bg="rgba(255,255,255,0.2)"
-                    px={1}
-                  >
-                    {uvData.maxUV[1]}
-                  </Text>{" "}
-                  klockan{" "}
-                  <Text
-                    as="span"
-                    fontSize="lg"
-                    fontWeight="bold"
-                    id="maxUVAt"
-                    display="inline-block"
-                    bg="rgba(255,255,255,0.2)"
-                    px={1}
-                  >
-                    {uvData.maxUV[0]}:00
+                <Box display="flex" alignItems="center">
+                  <Text fontWeight="500">
+                    Spara den här sidan som bokmärke för att alltid veta
+                    UV-indexet i din stad.
                   </Text>
-                  .
-                </Text>
-                <Text fontWeight="500">
-                  Idag {uvData.sunsetHasPassed ? "gick" : "går"} solen ner
-                  klockan{" "}
-                  <Text
-                    as="span"
-                    fontSize="lg"
-                    fontWeight="bold"
-                    display="inline-block"
-                    bg="rgba(255,255,255,0.2)"
-                    px={1}
-                  >
-                    {uvData.sunset}
-                  </Text>
-                  .
-                </Text>
-              </Box>
-            </Box>
-            <Box
-              maxWidth="500px"
-              width="100%"
-              bg="rgba(0,0,0,.5)"
-              rounded="md"
-              mt={4}
-              p={6}
-              pb={0}
-              color="white"
-            >
-              <UVChart
-                hourlyUVData={uvData.hourly}
-                maxUVVal={uvData.maxUV[1]}
-              />
-            </Box>
-            <Box
-              maxWidth="500px"
-              width="100%"
-              bg="rgba(0,0,0,.4)"
-              rounded="md"
-              mt={4}
-              p={6}
-              color="white"
-            >
-              {uvData.hourlyCollapsed.map((hour) => (
-                <Box
-                  borderTop="2px solid rgba(255,255,255,.1)"
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  p={2}
-                >
-                  <Text fontWeight="600">
-                    {hour[0].replace("-", ":00-")}:00
-                  </Text>
-                  <Box display="flex" alignItems="center">
-                    <Text
-                      as="span"
-                      fontSize=".7em"
-                      fontWeight="600"
-                      letterSpacing="-.02em"
-                      mr={4}
-                      opacity=".8"
-                      display={["none", "inline"]}
-                    >
-                      {
-                        [
-                          "Låg",
-                          "Låg",
-                          "Låg",
-                          "Medel",
-                          "Medel",
-                          "Medel",
-                          "Hög",
-                          "Hög",
-                          "Mycket hög",
-                          "Mycket hög",
-                          "Mycket hög",
-                          "Extremt",
-                          "Extremt",
-                          "Extremt",
-                        ][Math.round(hour[1])]
-                      }
-                    </Text>
-                    <Box display="flex" width="150px" alignItems="center">
-                      <Box
-                        bg="linear-gradient(-90deg, #805AD5, #E53E3E, #DD6B20, #D69E2E, #38A169)"
-                        width="90px"
-                        height="8px"
-                        borderRadius="4px"
-                        mr={4}
-                      >
-                        <Box
-                          width="3px"
-                          height="15px"
-                          borderLeft="2px solid black"
-                          mt="-3.75px"
-                          ml={90 * (hour[1] / 11)}
-                        />
-                      </Box>
-                      <Box fontWeight="800">
-                        <Text as="span">
-                          {hour[1].toString().split(".")[0]}
-                        </Text>
-                        {hour[1].toString().indexOf(".") !== -1 && "."}
-                        <Text as="span" fontSize=".8em" opacity=".5">
-                          {hour[1].toString().split(".")[1]}
-                        </Text>
-                      </Box>
-                    </Box>
-                  </Box>
                 </Box>
-              ))}
-            </Box>
-            <Box
-              maxWidth="500px"
-              width="100%"
-              bg="rgba(0,0,0,.4)"
-              rounded="md"
-              mt={4}
-              p={6}
-              color="white"
-            >
-              <Text fontWeight="600" fontSize="xl" mb="2">
-                Tips!
-              </Text>
-              <Box display="flex" alignItems="center">
-                <Text fontWeight="500">
-                  Spara den här sidan som bokmärke för att alltid veta
-                  UV-indexet i din stad.
-                </Text>
               </Box>
             </Box>
           </Box>
-        </Box>
-        <TypeForm
-          id="MruPDpam"
-          customIcon={
-            '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" viewBox="0 0 16 16"><path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15Zm0-9.007c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/></svg>'
-          }
-          notificationDays={7}
-          buttonColor="white"
-        />
-      </main>
+          <TypeForm
+            id="MruPDpam"
+            customIcon={
+              '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#000" viewBox="0 0 16 16"><path d="M8 15c4.418 0 8-3.134 8-7s-3.582-7-8-7-8 3.134-8 7c0 1.76.743 3.37 1.97 4.6-.097 1.016-.417 2.13-.771 2.966-.079.186.074.394.273.362 2.256-.37 3.597-.938 4.18-1.234A9.06 9.06 0 0 0 8 15Zm0-9.007c1.664-1.711 5.825 1.283 0 5.132-5.825-3.85-1.664-6.843 0-5.132Z"/></svg>'
+            }
+            notificationDays={7}
+            buttonColor="white"
+          />
+        </main>
+      </TanningProvider>
     </>
   );
 }
+
+const SPFAnalysis = dynamic(
+  () =>
+    import("@sakerhetspolisen/uv-kollen-ad-gen").then((mod) => mod.GeneralAd),
+  {
+    ssr: false,
+  }
+);
 
 const TypeForm = dynamic(
   () => import("@typeform/embed-react").then((mod) => mod.Popover),

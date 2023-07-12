@@ -25,7 +25,8 @@
     "next-seo": "^6.1.0",
     "react": "18.2.0",
     "react-apexcharts": "^1.4.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "@sakerhetspolisen/uv-kollen-ad-gen": "0.1.1"
   },
   "devDependencies": {
     "eslint-config-airbnb": "^17.0.0",
