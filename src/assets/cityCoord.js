@@ -5167,7 +5167,7 @@ const cityFull = [
   {
     locality: "Nacka",
     lat: 59.3100187,
-    long: 18.159903
+    long: 18.159903,
   },
   {
     locality: "Nedansjö",
