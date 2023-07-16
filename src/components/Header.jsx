@@ -69,6 +69,10 @@ const NAV_ITEMS = [
         href: "https://github.com/sakerhetspolisen/uv-kollen",
       },
       {
+        label: "Integritetspolicy",
+        href: "/integritetspolicy",
+      },
+      {
         label: "Kontakt",
         href: "mailto:uvkollen@sellerg.ren",
       },
