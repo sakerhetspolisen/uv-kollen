@@ -9,6 +9,8 @@ import { DefaultSeo } from "next-seo";
 import React, { useEffect } from "react";
 import Head from "next/head";
 import Header from "@/components/Header.jsx";
+import CookieNotice from "@/features/CookieNotice";
+import { push, init } from "@/lib/matomoNext.js";
 
 const Input = defineStyleConfig({
   baseStyle: {
@@ -33,19 +35,14 @@ const theme = extendTheme({
   },
 });
 
-const loadAnalytics = async () => {
-  const { init } = await import("@/lib/matomoNext.js");
-  init({
-    url: process.env.NEXT_PUBLIC_MATOMO_URL,
-    siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID,
-    jsTrackerFile: "besokare.js",
-    phpTrackerFile: "besokare.php",
-  });
-};
-
 export default function App({ Component, pageProps }) {
   useEffect(() => {
-    loadAnalytics();
+    init({
+      url: process.env.NEXT_PUBLIC_MATOMO_URL,
+      siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID,
+      jsTrackerFile: "besokare.js",
+      phpTrackerFile: "besokare.php",
+    });
   }, []);
 
   return (
@@ -106,6 +103,9 @@ export default function App({ Component, pageProps }) {
       <ChakraProvider theme={theme}>
         <Header />
         <Component {...pageProps} />
+        <CookieNotice
+          onAcceptAll={() => push(["rememberConsentGiven", 8760])}
+        />
       </ChakraProvider>
     </>
   );

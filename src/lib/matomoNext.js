@@ -39,6 +39,8 @@ export function init({
 
   if (onInitialization) onInitialization();
 
+  push(["requireCookieConsent"]);
+
   if (!excludedUrl) {
     push(["trackPageView"]);
   }
