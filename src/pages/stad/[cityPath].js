@@ -191,9 +191,6 @@ export default function City({ cityName, cityPath, data }) {
                   minUntilMidnight={minUntilMidnight(uvData.swedishDateTimeStr)}
                 />
               </Box>
-              <Box mt={4} width="100%" maxWidth="500px">
-                <SPFAnalysis />
-              </Box>
               <Box mt={4}>
                 <ForecastWidget
                   maxUV={{
@@ -241,14 +238,6 @@ export default function City({ cityName, cityPath, data }) {
     </>
   );
 }
-
-const SPFAnalysis = dynamic(
-  () =>
-    import("@sakerhetspolisen/uv-kollen-ad-gen").then((mod) => mod.GeneralAd),
-  {
-    ssr: false,
-  }
-);
 
 const TypeForm = dynamic(
   () => import("@typeform/embed-react").then((mod) => mod.Popover),
