@@ -1183,10 +1183,10 @@
   resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.4.0.tgz#77e948b9760bd22736a5d26e335a690f76fda37b"
   integrity sha512-cEjvTPU32OM9lUFegJagO0mRnIn+rbqrG89vV8/xLnLFX0DoR0r1oy5IlTga71Q7uT3Qus7qm7wgeiMT/+Irlg==
 
-"@sakerhetspolisen/uv-kollen-ad-gen@^0.1.4":
-  version "0.1.4"
-  resolved "https://npm.pkg.github.com/download/@sakerhetspolisen/uv-kollen-ad-gen/0.1.4/d17c8b4104bd97afeea0a87688108251c74b3be7#d17c8b4104bd97afeea0a87688108251c74b3be7"
-  integrity sha512-23G5k4sGlI1puS/fXvq4HNlmpwEOSDv2EKUV5yDswvmOA6Z6Jpo1aMzzhKshk5SRneqeZuUdVrjJkXammAyHJA==
+"@sakerhetspolisen/uv-kollen-ad-gen@0.2.6":
+  version "0.2.6"
+  resolved "https://npm.pkg.github.com/download/@sakerhetspolisen/uv-kollen-ad-gen/0.2.6/0c387a7222445d75d28fbfdfb8f78398a3c35e90#0c387a7222445d75d28fbfdfb8f78398a3c35e90"
+  integrity sha512-1wZ3Kb4QeIRXrVy7lHhsI7tHjAyts8KEU6nRXxChq+5nlZw6ERmY8mTVLoHL1mO4c/A4BQyLszfIeQDllOcrqQ==
 
 "@swc/helpers@0.5.1":
   version "0.5.1"
