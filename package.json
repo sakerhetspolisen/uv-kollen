@@ -17,7 +17,7 @@
     "@emotion/styled": "^11.10.8",
     "@sakerhetspolisen/uv-kollen-ad-gen": "0.2.6",
     "@typeform/embed-react": "^2.23.0",
-    "@vercel/kv": "^0.2.2",
+    "@vercel/kv": "^0.2.3",
     "apexcharts": "^3.40.0",
     "eslint": "^8.44.0",
     "eslint-config-next": "13.4.7",
