@@ -215,11 +215,11 @@ export default function Home() {
   );
 }
 
-const HomeForm = () => {
+function HomeForm() {
   const formRef = useRef();
   return (
     <form ref={formRef} noValidate onSubmit={(e) => e.preventDefault()}>
       <CityAutofill formRef={formRef} />
     </form>
   );
-};
+}

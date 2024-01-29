@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useEffect, useMemo, useState } from "react";
 import { setStorageElement, tryToParseStorageKeyValue } from "@/lib/webStorage";
 
 export const TanningContext = createContext({
@@ -6,7 +6,7 @@ export const TanningContext = createContext({
   setSkinType: () => null,
 });
 
-export const TanningProvider = ({ children }) => {
+export function TanningProvider({ children }) {
   const [skinType, setSkinType] = useState(undefined);
   const [spf, setSPF] = useState(null);
 
@@ -33,16 +33,19 @@ export const TanningProvider = ({ children }) => {
     setStorageElement("spf", parseInt(newSPF, 10), "session");
   };
 
+  const tanningData = useMemo(
+    () => ({
+      skinType,
+      setSkinType: setStoredSkinType,
+      spf,
+      setSPF: setStoredSPF,
+    }),
+    [skinType, spf]
+  );
+
   return (
-    <TanningContext.Provider
-      value={{
-        skinType,
-        setSkinType: setStoredSkinType,
-        spf,
-        setSPF: setStoredSPF,
-      }}
-    >
+    <TanningContext.Provider value={tanningData}>
       {children}
     </TanningContext.Provider>
   );
-};
+}

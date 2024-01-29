@@ -105,6 +105,7 @@ export default function TanningTimeWidget(props) {
           skinType={skinType}
           setSPF={setSPF}
           setSkinType={setSkinType}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...props}
         />
       ) : (

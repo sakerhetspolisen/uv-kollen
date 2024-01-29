@@ -102,6 +102,7 @@ export default function App({ Component, pageProps }) {
       </Head>
       <ChakraProvider theme={theme}>
         <Header />
+        {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...pageProps} />
         <CookieNotice
           onAcceptAll={() => push(["rememberConsentGiven", 8760])}

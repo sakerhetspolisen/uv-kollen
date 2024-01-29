@@ -37,3 +37,10 @@ jspm_packages
 .node_repl_history
 .next
 .env.local
+
+# npm files
+.npmrc
+
+# environment variables
+.env
+.env*.local
