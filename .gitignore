@@ -38,3 +38,10 @@ jspm_packages
 .next
 *.local
 .vercel
+
+# npm files
+.npmrc
+
+# environment variables
+.env
+.env*.local

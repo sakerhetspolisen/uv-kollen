@@ -120,6 +120,7 @@ export default function WithSubnavigation() {
           <Flex flex={{ base: 1 }} justify={{ base: "center", lg: "start" }}>
             <ConditionalWrapper
               condition={router.pathname !== "/"}
+              // eslint-disable-next-line react/no-unstable-nested-components
               wrapper={(children) => (
                 <Link href="/" _hover={{ textDecoration: "none" }}>
                   {children}
@@ -168,7 +169,7 @@ export default function WithSubnavigation() {
   );
 }
 
-const DesktopNav = () => {
+function DesktopNav() {
   const linkColor = useColorModeValue("gray.600", "gray.200");
   const linkHoverColor = useColorModeValue("gray.800", "white");
   const popoverContentBgColor = useColorModeValue("white", "gray.800");
@@ -205,6 +206,7 @@ const DesktopNav = () => {
               >
                 <Stack>
                   {navItem.children.map((child) => (
+                    // eslint-disable-next-line react/jsx-props-no-spreading
                     <DesktopSubNav key={child.label} {...child} />
                   ))}
                 </Stack>
@@ -215,57 +217,62 @@ const DesktopNav = () => {
       ))}
     </Stack>
   );
-};
+}
 
-const DesktopSubNav = ({ label, href, subLabel }) => (
-  <Link
-    href={href}
-    role="group"
-    display="block"
-    p={2}
-    rounded="md"
-    _hover={{ bg: useColorModeValue("yellow.50", "gray.900") }}
-  >
-    <Stack direction="row" align="center">
-      <Box>
-        <Text
+function DesktopSubNav({ label, href, subLabel }) {
+  return (
+    <Link
+      href={href}
+      role="group"
+      display="block"
+      p={2}
+      rounded="md"
+      _hover={{ bg: useColorModeValue("yellow.50", "gray.900") }}
+    >
+      <Stack direction="row" align="center">
+        <Box>
+          <Text
+            transition="all .3s ease"
+            _groupHover={{ color: "yellow.500" }}
+            fontWeight={500}
+          >
+            {label}
+          </Text>
+          <Text fontSize="sm">{subLabel}</Text>
+        </Box>
+        <Flex
           transition="all .3s ease"
-          _groupHover={{ color: "yellow.500" }}
-          fontWeight={500}
+          transform="translateX(-10px)"
+          opacity={0}
+          _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
+          justify="flex-end"
+          align="center"
+          flex={1}
         >
-          {label}
-        </Text>
-        <Text fontSize="sm">{subLabel}</Text>
-      </Box>
-      <Flex
-        transition="all .3s ease"
-        transform="translateX(-10px)"
-        opacity={0}
-        _groupHover={{ opacity: "100%", transform: "translateX(0)" }}
-        justify="flex-end"
-        align="center"
-        flex={1}
-      >
-        <Icon color="yellow.500" w={5} h={5} as={ChevronRightIcon} />
-      </Flex>
+          <Icon color="yellow.500" w={5} h={5} as={ChevronRightIcon} />
+        </Flex>
+      </Stack>
+    </Link>
+  );
+}
+
+function MobileNav({ isHome }) {
+  return (
+    <Stack
+      bg={useColorModeValue("white", "gray.800")}
+      p={4}
+      display={{ lg: "none" }}
+    >
+      {!isHome && <MobileNavItem label="Hem" href="/" />}
+      {NAV_ITEMS.map((navItem) => (
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        <MobileNavItem key={navItem.label} {...navItem} />
+      ))}
     </Stack>
-  </Link>
-);
+  );
+}
 
-const MobileNav = ({ isHome }) => (
-  <Stack
-    bg={useColorModeValue("white", "gray.800")}
-    p={4}
-    display={{ lg: "none" }}
-  >
-    {!isHome && <MobileNavItem label="Hem" href="/" />}
-    {NAV_ITEMS.map((navItem) => (
-      <MobileNavItem key={navItem.label} {...navItem} />
-    ))}
-  </Stack>
-);
-
-const MobileNavItem = ({ label, children, href }) => {
+function MobileNavItem({ label, children, href }) {
   const { isOpen, onToggle } = useDisclosure();
 
   return (
@@ -316,19 +323,21 @@ const MobileNavItem = ({ label, children, href }) => {
       </Collapse>
     </Stack>
   );
-};
+}
 
-const HeartIcon = () => (
-  <svg
-    stroke="currentColor"
-    fill="currentColor"
-    strokeWidth="0"
-    viewBox="0 0 512 512"
-    focusable="false"
-    height="1em"
-    width="1em"
-    xmlns="http://www.w3.org/2000/svg"
-  >
-    <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
-  </svg>
-);
+function HeartIcon() {
+  return (
+    <svg
+      stroke="currentColor"
+      fill="currentColor"
+      strokeWidth="0"
+      viewBox="0 0 512 512"
+      focusable="false"
+      height="1em"
+      width="1em"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path d="M462.3 62.6C407.5 15.9 326 24.3 275.7 76.2L256 96.5l-19.7-20.3C186.1 24.3 104.5 15.9 49.7 62.6c-62.8 53.6-66.1 149.8-9.9 207.9l193.5 199.8c12.5 12.9 32.8 12.9 45.3 0l193.5-199.8c56.3-58.1 53-154.3-9.8-207.9z" />
+    </svg>
+  );
+}
