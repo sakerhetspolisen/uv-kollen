@@ -74,7 +74,7 @@ const NAV_ITEMS = [
       },
       {
         label: "Kontakt",
-        href: "mailto:uvkollen@sellerg.ren",
+        href: "mailto:uvkollen@kolifink.se",
       },
     ],
   },
