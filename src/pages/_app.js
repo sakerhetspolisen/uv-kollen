@@ -7,6 +7,7 @@ import {
 import { Inter } from "next/font/google";
 import { DefaultSeo } from "next-seo";
 import React, { useEffect } from "react";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 import Head from "next/head";
 import Header from "@/components/Header.jsx";
 import CookieNotice from "@/features/CookieNotice";
@@ -108,6 +109,7 @@ export default function App({ Component, pageProps }) {
           onAcceptAll={() => push(["rememberConsentGiven", 8760])}
         />
       </ChakraProvider>
+      <SpeedInsights />
     </>
   );
 }
