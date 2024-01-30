@@ -43,7 +43,7 @@ export default function PrivacyPolicy() {
             behandlar personuppgifter. Den beskriver också dina rättigheter
             gentemot UV-Kollen och hur du kan använda dessa.
             Personuppgiftsansvarig för behandlingen som anges i denna policy är
-            Karl Sellergren, 030127-XXXX, Byalagsgatan 50, 256 56 Helsingborg
+            Karl Sellergren, 030127-XXXX, Tornavägen 3A, 223 63 Lund
             (”jag”, “UV-Kollen”).
           </Text>
           <Heading as="h2" mb={4} fontSize="2xl">
@@ -380,11 +380,11 @@ export default function PrivacyPolicy() {
           <Text lineHeight={1.7} mb={8}>
             För att utöva dina rättigheter eller om du har frågor om vår
             personuppgiftsbehandling kan du alltid kontakta mig via mejl på{" "}
-            <Link href="mailto:uvkollen@sellerg.ren">uvkollen@sellerg.ren</Link>
+            <Link href="mailto:uvkollen@kolifink.se">uvkollen@sellerg.ren</Link>
             .
           </Text>
           <Text lineHeight={1.7} mb={8} fontStyle="italic">
-            Senast uppdaterad: 2023-07-17
+            Senast uppdaterad: 2024-01-30
           </Text>
         </Box>
       </Box>
