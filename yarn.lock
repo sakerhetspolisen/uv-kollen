@@ -1316,18 +1316,18 @@
   dependencies:
     tslib "^2.4.0"
 
-"@typeform/embed-react@^3.10.0":
-  version "3.10.0"
-  resolved "https://registry.yarnpkg.com/@typeform/embed-react/-/embed-react-3.10.0.tgz#92cc000f70b0fe3ec74d51df05013a170b6eeeda"
-  integrity sha512-2ELxR0KtvKFTEDAMYQUGkck0TLw2ANdhgy1yZNy/lWlwh6wDyLHGaIAOoHhOLBgEDkTbzg24RPP9N+HR9CR1BA==
+"@typeform/embed-react@^3.11.0":
+  version "3.11.0"
+  resolved "https://registry.yarnpkg.com/@typeform/embed-react/-/embed-react-3.11.0.tgz#0465667240f25d7c48e1a05699fe020f63c4595b"
+  integrity sha512-FRCtoKoMLvvWxfMmGVtjQVqljPex5K0bw//+fGaR+TrexZgn2ydgj9KNdVhIhTeauwslknxoJ2/ptjpT9NiREA==
   dependencies:
-    "@typeform/embed" "4.4.1"
+    "@typeform/embed" "4.5.0"
     fast-deep-equal "^3.1.3"
 
-"@typeform/embed@4.4.1":
-  version "4.4.1"
-  resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-4.4.1.tgz#1804006a99ba1a7b5c8a47209e056bdb86e82bb0"
-  integrity sha512-TMt/X17VzGcQp11TaQiJZei8JFRg8TGJs6xwssWsYhqwqkOPHDa7M5XWjSsGiCT+tun72MDgFDZc8KyVGRA3ew==
+"@typeform/embed@4.5.0":
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@typeform/embed/-/embed-4.5.0.tgz#c54685931a2031c1c92790f70d7de7349a5c0a06"
+  integrity sha512-k6lLxxOxu+QcWqXkMgsxo2HA2KRyF3gpXEZzN+16LjeyHih8YzY6K7g3w+RPtHBKaV4ld8+7lS9yipaM4etriw==
 
 "@types/json5@^0.0.29":
   version "0.0.29"
