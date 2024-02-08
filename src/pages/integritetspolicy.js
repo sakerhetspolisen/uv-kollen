@@ -164,7 +164,7 @@ export default function PrivacyPolicy() {
               <Box p={2}>
                 <Text>
                   När du kontaktar mig via UV-Kollens kanaler (via
-                  uvkollen@sellerg.ren eller sociala medier) kan jag komma att
+                  uvkollen@kolifink.se eller sociala medier) kan jag komma att
                   samla in följande data för att kunna besvara ditt ärende:
                 </Text>
                 <UnorderedList>
@@ -380,11 +380,11 @@ export default function PrivacyPolicy() {
           <Text lineHeight={1.7} mb={8}>
             För att utöva dina rättigheter eller om du har frågor om vår
             personuppgiftsbehandling kan du alltid kontakta mig via mejl på{" "}
-            <Link href="mailto:uvkollen@kolifink.se">uvkollen@sellerg.ren</Link>
+            <Link href="mailto:uvkollen@kolifink.se">uvkollen@kolifink.se</Link>
             .
           </Text>
           <Text lineHeight={1.7} mb={8} fontStyle="italic">
-            Senast uppdaterad: 2024-01-30
+            Senast uppdaterad: 2024-02-08
           </Text>
         </Box>
       </Box>
