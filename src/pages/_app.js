@@ -6,12 +6,11 @@ import {
 } from "@chakra-ui/react";
 import { Inter } from "next/font/google";
 import { DefaultSeo } from "next-seo";
-import React, { useEffect } from "react";
+import React from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import Head from "next/head";
 import Header from "@/components/Header.jsx";
 import CookieNotice from "@/features/CookieNotice";
-import { push, init } from "@/lib/matomoNext.js";
 
 const Input = defineStyleConfig({
   baseStyle: {
@@ -37,15 +36,6 @@ const theme = extendTheme({
 });
 
 export default function App({ Component, pageProps }) {
-  useEffect(() => {
-    init({
-      url: process.env.NEXT_PUBLIC_MATOMO_URL,
-      siteId: process.env.NEXT_PUBLIC_MATOMO_SITE_ID,
-      jsTrackerFile: "besokare.js",
-      phpTrackerFile: "besokare.php",
-    });
-  }, []);
-
   return (
     <>
       <DefaultSeo
@@ -105,9 +95,7 @@ export default function App({ Component, pageProps }) {
         <Header />
         {/* eslint-disable-next-line react/jsx-props-no-spreading */}
         <Component {...pageProps} />
-        <CookieNotice
-          onAcceptAll={() => push(["rememberConsentGiven", 8760])}
-        />
+        <CookieNotice onAcceptAll={() => null} />
       </ChakraProvider>
       <SpeedInsights />
     </>
