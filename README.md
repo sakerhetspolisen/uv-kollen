@@ -43,7 +43,7 @@
 
 ## License
 
-Copyright &copy; 2023 [Karl Sellergren](https://github.com/sakerhetspolisen).
+Copyright &copy; 2024 [Karl Sellergren](https://github.com/sakerhetspolisen).
 
 ## Developing
 
