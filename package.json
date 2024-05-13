@@ -18,7 +18,7 @@
     "@sakerhetspolisen/uv-kollen-ad-gen": "0.2.6",
     "@typeform/embed-react": "^3.10.0",
     "@vercel/speed-insights": "^1.0.9",
-    "apexcharts": "^3.45.2",
+    "apexcharts": "^3.49.1",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.1.0",
     "framer-motion": "^11.0.3",
