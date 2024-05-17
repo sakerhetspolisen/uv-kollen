@@ -2,8 +2,8 @@ import { Box, Button, Heading, Text } from "@chakra-ui/react";
 import Head from "next/head";
 import React from "react";
 import Image from "next/image";
-import errorBgd from "@/assets/errorBgd.jpg";
 import Link from "next/link";
+import errorBgd from "@/assets/errorBgd.jpg";
 
 export default function NotFound() {
   return (
