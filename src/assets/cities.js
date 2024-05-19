@@ -791,6 +791,7 @@ const cities = [
   "kulltorp",
   "kullö",
   "kumla",
+  "kungsbacka",
   "kungsberga",
   "kungsgården",
   "kungshamn",
