@@ -3960,6 +3960,11 @@ const cityFull = [
     long: 15.109026,
   },
   {
+    locality: "Kungsbacka",
+    lat: 57.495331,
+    long: 12.079899,
+  },
+  {
     locality: "Kungsberga",
     lat: 59.405967,
     long: 17.627952,
