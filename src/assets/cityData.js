@@ -791,6 +791,7 @@ const cityNames = [
   ["Kulltorp", "Gnosjö, Västmanland"],
   ["Kullö", "Vaxholm, Stockholm"],
   ["Kumla", "Kumla, Örebro"],
+  ["Kungsbacka", "Kungsbacka, Halland"],
   ["Kungsberga", "Ekerö, Stockholm"],
   ["Kungsgården", "Sandviken, Gävleborg"],
   ["Kungshamn", "Sotenäs, Västra Götaland"],
