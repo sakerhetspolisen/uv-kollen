@@ -27,9 +27,9 @@ import {
 } from "@chakra-ui/icons";
 import React from "react";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import ConditionalWrapper from "./ConditionalWrapper";
 import swishQR from "@/assets/swish-QR.png";
-import Image from "next/image";
 
 const NAV_ITEMS = [
   {
