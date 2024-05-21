@@ -13,6 +13,10 @@ import {
   useBreakpointValue,
   useDisclosure,
   Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
 } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import {
@@ -24,6 +28,8 @@ import {
 import React from "react";
 import { useRouter } from "next/router";
 import ConditionalWrapper from "./ConditionalWrapper";
+import swishQR from "@/assets/swish-QR.png";
+import Image from "next/image";
 
 const NAV_ITEMS = [
   {
@@ -82,6 +88,11 @@ const NAV_ITEMS = [
 
 export default function WithSubnavigation() {
   const { isOpen, onToggle } = useDisclosure();
+  const {
+    isOpen: isDonationModalOpen,
+    onOpen: onDonationModalOpen,
+    onClose: onDonationModalClose,
+  } = useDisclosure();
   const router = useRouter();
 
   return (
@@ -150,20 +161,41 @@ export default function WithSubnavigation() {
             direction="row"
             spacing={6}
           >
-            <Link
-              href="https://www.paypal.com/paypalme/sellergreen"
-              rel="noindex nofollow"
+            <Button
+              leftIcon={<HeartIcon />}
+              colorScheme="yellow"
+              size="sm"
+              onClick={onDonationModalOpen}
             >
-              <Button leftIcon={<HeartIcon />} colorScheme="yellow" size="sm">
-                Sponsra
-              </Button>
-            </Link>
+              Sponsra
+            </Button>
           </Stack>
         </Flex>
 
         <Collapse in={isOpen} animateOpacity>
           <MobileNav isHome={router.pathname === "/"} />
         </Collapse>
+
+        <Modal isOpen={isDonationModalOpen} onClose={onDonationModalClose}>
+          <ModalOverlay />
+          <ModalContent borderRadius={30} background="transparent">
+            <ModalCloseButton zIndex={1} color="white" />
+            <Box position="relative" zIndex={0}>
+              <Image
+                src={swishQR}
+                alt="QR-kod för Swish"
+                width={448}
+                height={679}
+                style={{
+                  objectFit: "contain",
+                  width: "100%",
+                  height: "min-content",
+                  zIndex: 0,
+                }}
+              />
+            </Box>
+          </ModalContent>
+        </Modal>
       </Box>
     </header>
   );
