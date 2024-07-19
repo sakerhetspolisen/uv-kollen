@@ -14,7 +14,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@choc-ui/chakra-autocomplete": "5.4.0",
     "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.0",
+    "@emotion/styled": "^11.12.0",
     "@sakerhetspolisen/uv-kollen-ad-gen": "0.2.6",
     "@typeform/embed-react": "^3.10.0",
     "@vercel/speed-insights": "^1.0.9",
