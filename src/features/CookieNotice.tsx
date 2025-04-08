@@ -1,9 +1,9 @@
+"use client";
 import React, { useEffect, useState } from "react";
-import { Box, Button, Text } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
+import { Box, Button, Link, Text } from "@chakra-ui/react";
 import { setStorageElement, tryToParseStorageKeyValue } from "@/lib/webStorage";
 
-export default function CookieNotice({ onAcceptAll }) {
+export default function CookieNotice() {
   const [renderNotice, setRenderNotice] = useState(true);
   const [fadeInNotice, setFadeInNotice] = useState(0);
 
@@ -28,7 +28,6 @@ export default function CookieNotice({ onAcceptAll }) {
 
   const handleAcceptAll = () => {
     setRenderNotice(false);
-    onAcceptAll();
   };
 
   return renderNotice ? (
