@@ -1,0 +1,72 @@
+@import "tailwindcss";
+
+@layer components {
+  h1, h2, h3, h4, h5, h6 {
+    letter-spacing: -0.04em;
+    font-family: 'Source Serif 4', serif;
+  }
+  p, span, b, i, a, button {
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .sunrise-gradient {
+    background:
+      radial-gradient(circle at 50% 120%, 
+        rgb(255, 133, 155) 0%, 
+        rgb(255, 215, 138) 35%, 
+        rgb(242, 230, 165) 55%,
+        rgb(86, 81, 195) 100%);
+    animation: glowing-sun 10s ease-in-out infinite alternate;
+    transform-origin: center bottom;
+  }
+
+  .noise-texture {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg viewBox="0 0 900 900" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch" /></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" /></svg>');
+    filter: brightness(120%);
+    opacity: 0.7;
+    pointer-events: none;
+  }
+}
+
+@keyframes glowing-sun {
+    0% {}
+    100% {
+      transform: scale(1.8);
+    }
+  }
+
+@config "../../tailwind.config.js"
+
+/* 
+@theme {
+  --font-header: "Source Serif 4", serif;
+  --font-body: "PT Sans", sans-serif;
+
+  --color-primary: #da7756;
+
+  --color-minecraft: #60A060;
+  --color-mustard: #e6c050;
+  --color-orange: #da7756;
+  --color-love: #a94c4c;
+
+  --color-neutral-light: #F5F2ED;
+  --color-neutral: #e0dcd7;
+  --color-neutral-dark: #8e827c;
+
+  --color-earth-100: #c2b7a2;
+  --color-earth-200: #b0a794;
+  --color-earth-300: #816e63;
+  --color-earth-400: #585654;
+  --color-earth-500: #8e827c;
+
+  --tracking-heading: -0.04em;
+  --tracking-body: -0.025em;
+}
+ */
