@@ -6,7 +6,7 @@ import {
   ListItem,
   Text,
   useColorModeValue,
-  Button
+  Button,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { SunIcon } from "@chakra-ui/icons";
@@ -86,24 +86,24 @@ export default function Home() {
                       maxW="4xl"
                       display="flex"
                       alignItems="center"
-                      px={4}
+                      px={6}
                       style={{ borderRadius: 10 }}
-                      mb={6}
+                      mb={8}
                     >
                       <Text as="span" fontWeight="600">
                         UV-Kollen 2.0 är på ingång.
                       </Text>
-                      <Link href="/nylansering">
-                        <Button
-                          size={["sm", "md"]}
-                          mx={2}
-                          my={2}
-                          py={5}
-                          colorScheme={useColorModeValue("red.400", "red.800")}
-                        >
-                          Ta en titt
-                        </Button>
-                      </Link>
+                      <Button
+                        size={["sm", "md"]}
+                        mx={2}
+                        my={2}
+                        py={5}
+                        colorScheme={useColorModeValue("yellow", "yellow")}
+                        as={Link}
+                        href="/nylansering"
+                      >
+                        Ta en titt
+                      </Button>
                     </Box>
                   </Box>
                   <Heading
