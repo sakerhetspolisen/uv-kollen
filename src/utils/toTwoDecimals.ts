@@ -1,0 +1,1 @@
+export default function toTwoDecimals(str: string) { return Number.parseFloat(str).toFixed(2) };

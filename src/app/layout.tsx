@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import { Source_Serif_4, PT_Sans } from "next/font/google";
 import Navbar from "@/src/components/Navbar";
-
 import "./globals.css";
 import { Providers } from "./providers";
+import Footer from "@/src/components/Footer";
 
 const sourceSerif = Source_Serif_4({
   subsets: ["latin"],
@@ -32,6 +32,7 @@ export default function RootLayout({
         <Providers>
           <Navbar />
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>

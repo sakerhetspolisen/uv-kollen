@@ -2,38 +2,61 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { FaLocationDot } from "react-icons/fa6";
-
-// Sample cities; replace or fetch dynamically
-const allCities: [string, string, string][] = [
-  ["Stockholm", "Stockholm, Stockholm", "stockholm"],
-  ["Stockholm", "Stockholm, Stockholm", "stockholm2"],
-  ["Stockholm", "Stockholm, Stockholm", "stockholm3"],
-  ["Göteborg", "Göteborg, Västra Götaland", "göteborg"],
-  ["Malmö", "Malmö, Skåne", "malmö"],
-];
+import { Button } from "@heroui/react";
 
 export default function SearchWithSuggestions() {
   const router = useRouter();
   const [query, setQuery] = useState("");
-  const [suggestions, setSuggestions] = useState<[string, string, string][]>([
-    ["Stockholm", "Stockholm, Stockholm", "stockholm"],
-    ["Göteborg", "Göteborg, Västra Götaland", "göteborg"],
-    ["Malmö", "Malmö, Skåne", "malmö"],
-  ]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [suggestions, setSuggestions] = useState<{ path: string; name: string; name_formatted: string }[]>([]);
   const [activeIndex, setActiveIndex] = useState(-1);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Filter as user types
   useEffect(() => {
-    if (query.trim()) {
-      setSuggestions(
-        allCities.filter((city) =>
-          city[0].toLowerCase().startsWith(query.toLowerCase())
-        )
-      );
-    } else {
-      setSuggestions([]);
+    // Clear any existing timeout to debounce the requests
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
     }
+
+    const fetchSuggestions = async () => {
+      if (query.trim() && query.length > 1) {
+        try {
+          const res = await fetch(
+            `/api/suggest?q=${encodeURIComponent(query)}`
+          );
+          if (!res.ok) {
+            console.error("Error fetching suggestions");
+            setSuggestions([]);
+            return;
+          }
+          const data = await res.json();
+          setSuggestions(data);
+        } catch (error) {
+          console.error("Fetch error:", error);
+          setSuggestions([]);
+        }
+      } else {
+        setSuggestions([]);
+      }
+    };
+
+    if (query.length == 2) {
+      fetchSuggestions();
+    }
+
+    // Set a new timeout for the API call with a 300ms delay
+    timeoutRef.current = setTimeout(() => {
+      fetchSuggestions();
+    }, 300);
+
+    // Cleanup the timeout on component unmount or when query changes again
+    return () => {
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, [query]);
 
   // Close on outside click
@@ -51,13 +74,14 @@ export default function SearchWithSuggestions() {
   }, []);
 
   const handleSelect = (city: string) => {
-    router.push(`/city/${encodeURIComponent(city)}`);
+    setIsLoading(true)
+    router.push(`/stad/${encodeURIComponent(city)}`);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (suggestions.length) {
-      handleSelect(suggestions[0][2]);
+      handleSelect(suggestions[0].path);
     } else if (query.trim()) {
       handleSelect(query.trim());
     }
@@ -83,20 +107,21 @@ export default function SearchWithSuggestions() {
         />
 
         {/* submit button */}
-        <button
+        <Button
+          isLoading={isLoading}
           type="submit"
-          className="text-white font-semibold cursor-pointer text-lg absolute end-2.5 bottom-[9px] bg-neutral-800 hover:bg-neutral-700 focus:ring-4 focus:outline-none focus:ring-neutral-300 rounded-lg px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
+          className="text-white font-semibold cursor-pointer text-lg absolute end-2.5 bottom-[9px] bg-neutral-950 hover:bg-neutral-900 data-[loading=true]:bg-neutral-800 focus:ring-4 focus:outline-none focus:ring-neutral-300 rounded-lg px-4 py-2 transition-all duration-200 ease-in-out transform hover:scale-105 hover:shadow-lg"
         >
           Beräkna
-        </button>
+        </Button>
 
         {/* suggestions */}
-        {suggestions.length > 0 && (
+        {suggestions.length > 0 && !isLoading && (
           <ul className="absolute z-10 w-full bg-neutral-light border border-neutral rounded-b-lg shadow-lg max-h-60 overflow-auto">
             {suggestions.map((suggestion, idx) => (
               <li
-                key={suggestion[2]}
-                onClick={() => handleSelect(suggestion[2])}
+                key={suggestion.path}
+                onClick={() => handleSelect(suggestion.path)}
                 onMouseEnter={() => setActiveIndex(idx)}
                 className={`flex items-center px-4 py-1 lg:py-2 cursor-pointer ${
                   activeIndex === idx ? "bg-neutral-300" : ""
@@ -105,10 +130,10 @@ export default function SearchWithSuggestions() {
                 <FaLocationDot className="w-5 h-5 text-neutral-900 mr-4" />
                 <div className="flex flex-col items-start justify-start py-2">
                   <span className="text-xl font-serif font-semibold whitespace-nowrap leading-5 tracking-tighter text-neutral-dark">
-                    {suggestion[0]}
+                    {suggestion.name}
                   </span>
                   <span className="text-md text-neutral-dark">
-                    {suggestion[1]}
+                    {suggestion.name_formatted}
                   </span>
                 </div>
               </li>
