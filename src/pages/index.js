@@ -13,6 +13,7 @@ import { NextSeo, SocialProfileJsonLd } from "next-seo";
 import Head from "next/head";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
+import Link from "next/link";
 
 export default function Home() {
   const siteLinksSearchBoxJSONLd = {
@@ -74,6 +75,26 @@ export default function Home() {
             <Box maxWidth={1300} mx={[4, 4, 6]} mb={20}>
               <Box display="flex" justifyContent="center">
                 <Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box bg={useColorModeValue("gray.50", "gray.900")} maxW="2xl">
+                      <Text>UV-Kollen 2.0 är på ingång.</Text>
+                      <Link href="/nylansering">
+                        <Button
+                          size={["sm", "md"]}
+                          mx={2}
+                          my={2}
+                          py={5}
+                          colorScheme={useColorModeValue("yellow", "yellow")}
+                        >
+                          Ta en titt
+                        </Button>
+                      </Link>
+                    </Box>
+                  </Box>
                   <Heading
                     as="h2"
                     fontSize={["5xl", "5xl", "5xl", "7xl"]}
