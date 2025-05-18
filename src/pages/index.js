@@ -81,15 +81,25 @@ export default function Home() {
                     justifyContent="center"
                     alignItems="center"
                   >
-                    <Box bg={useColorModeValue("gray.50", "gray.900")} maxW="2xl">
-                      <Text>UV-Kollen 2.0 är på ingång.</Text>
+                    <Box
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      maxW="4xl"
+                      display="flex"
+                      alignItems="center"
+                      px={4}
+                      style={{ borderRadius: 10 }}
+                      mb={6}
+                    >
+                      <Text as="span" fontWeight="600">
+                        UV-Kollen 2.0 är på ingång.
+                      </Text>
                       <Link href="/nylansering">
                         <Button
                           size={["sm", "md"]}
                           mx={2}
                           my={2}
                           py={5}
-                          colorScheme={useColorModeValue("yellow", "yellow")}
+                          colorScheme={useColorModeValue("red.400", "red.800")}
                         >
                           Ta en titt
                         </Button>

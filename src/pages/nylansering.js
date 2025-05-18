@@ -30,7 +30,11 @@ export default function Release() {
             högsäsong, vilket gjort att sidan ofta ligger nere under soliga
             dagar. Men det sätter vi stopp för nu.
           </Text>
-          <Image src={announcement} alt="UV-Kollens nya branding" style={{ borderRadius: 10, marginBottom: 40 }} />
+          <Image
+            src={announcement}
+            alt="UV-Kollens nya branding"
+            style={{ borderRadius: 10, marginBottom: 40 }}
+          />
           <section>
             <Heading as="h2" fontSize="1.5em" mb={6}>
               En helt ny design
@@ -65,8 +69,12 @@ export default function Release() {
             </Text>
           </section>
           <section>
-            <Box p={4} bg={useColorModeValue("gray.200", "gray.900")}>
-                UV-Kollen 2.0 släpps kommande veckan. Håll utkik!
+            <Box
+              p={4}
+              bg={useColorModeValue("gray.200", "gray.900")}
+              style={{ borderRadius: 10 }}
+            >
+              UV-Kollen 2.0 släpps kommande veckan. Håll utkik!
             </Box>
           </section>
         </Box>
