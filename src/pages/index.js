@@ -6,11 +6,13 @@ import {
   ListItem,
   Text,
   useColorModeValue,
+  Button,
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo, SocialProfileJsonLd } from "next-seo";
 import Head from "next/head";
+import Link from "next/link";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
 
@@ -74,6 +76,37 @@ export default function Home() {
             <Box maxWidth={1300} mx={[4, 4, 6]} mb={20}>
               <Box display="flex" justifyContent="center">
                 <Box>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                  >
+                    <Box
+                      bg={useColorModeValue("gray.50", "gray.900")}
+                      maxW="4xl"
+                      display="flex"
+                      alignItems="center"
+                      pl={4}
+                      pr={2}
+                      style={{ borderRadius: 10 }}
+                      mb={8}
+                    >
+                      <Text as="span" fontWeight="600">
+                        UV-Kollen 2.0 är på ingång.
+                      </Text>
+                      <Button
+                        size={["sm", "md"]}
+                        ml={4}
+                        my={2}
+                        py={5}
+                        colorScheme={useColorModeValue("yellow", "yellow")}
+                        as={Link}
+                        href="/nylansering"
+                      >
+                        Ta en titt
+                      </Button>
+                    </Box>
+                  </Box>
                   <Heading
                     as="h2"
                     fontSize={["5xl", "5xl", "5xl", "7xl"]}
