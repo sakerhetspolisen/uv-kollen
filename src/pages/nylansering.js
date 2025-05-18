@@ -30,7 +30,7 @@ export default function Release() {
             högsäsong, vilket gjort att sidan ofta ligger nere under soliga
             dagar. Men det sätter vi stopp för nu.
           </Text>
-          <Image src={announcement} alt="UV-Kollens nya branding" />
+          <Image src={announcement} alt="UV-Kollens nya branding" style={{ borderRadius: 10, marginBottom: 40 }} />
           <section>
             <Heading as="h2" fontSize="1.5em" mb={6}>
               En helt ny design
