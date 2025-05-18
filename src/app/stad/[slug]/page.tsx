@@ -56,20 +56,22 @@ export default async function CityPage({ params }) {
                 I {cityData.name} är UV-index
               </span>
               <p className="font-black font-serif">
-                <span className="text-[16rem] leading-[1] pl-32">2</span>
-                <span className="text-8xl leading-[1] opacity-55">.89</span>
+                <span className="text-[13rem] pl-20 md:text-[16rem] leading-[1] md:pl-32">
+                  2
+                </span>
+                <span className="text-6xl md:text-8xl leading-[1] opacity-55">.89</span>
               </p>
               <span className="block text-3xl mt-4">just nu.</span>
             </div>
             <div>{/* Ad space */}</div>
-            <div className="py-4">
+            <div className="pb-3">
               <TanningTimeWidget
                 currentUVIndex={parseInt(uvData.uv ?? "", 10)}
                 uvHourByHour={uvData.hourly}
               />
             </div>
             <div>{/* Ad space */}</div>
-            <div className="py-4">
+            <div className="py-3">
               <ForecastWidget
                 maxUV={{
                   time: uvData.maxUV[0],

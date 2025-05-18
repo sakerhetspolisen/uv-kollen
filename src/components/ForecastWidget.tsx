@@ -50,22 +50,22 @@ export default function ForecastWidget({
   }, [uvHourByHour]);
 
   return (
-    <div className="w-full bg-white rounded-md text-black">
-      <div className="flex justify-center flex-col p-6 pb-0">
-        <p className="font-semibold text-xl mb-10 leading-tight">
+    <div className="bg-white rounded-md text-black">
+      <div className="p-6 pb-0">
+        <p className="font-semibold font-serif text-xl mb-8 leading-tight">
           Dygnsprognos
         </p>
-        <p className="font-medium">
+        <p className="font-medium max-w-sm">
           Det högsta UV-indexet under det kommande dygnet kommer att vara{" "}
           <span
-            className="text-lg font-semibold inline-block bg-yellow-100 px-1 rounded-md"
+            className="text-lg font-semibold bg-yellow-100 px-1 rounded-md"
             id="maxUV"
           >
             {maxUV.value}
           </span>{" "}
           klockan{" "}
           <span
-            className="text-lg font-semibold inline-block bg-yellow-100 px-1 rounded-md"
+            className="text-lg font-semibold bg-yellow-100 px-1 rounded-md"
             id="maxUVAt"
           >
             {maxUV.time}:00{maxUV.isTomorrow && " imorgon"}
@@ -74,7 +74,7 @@ export default function ForecastWidget({
         </p>
         <p className="font-medium leading-tight">
           Idag {sunsetTime.hasPassed ? "gick" : "går"} solen ner klockan{" "}
-          <span className="text-lg font-semibold inline-block bg-yellow-100 px-1 rounded-md">
+          <span className="text-lg font-semibold bg-yellow-100 px-1 rounded-md">
             {sunsetTime.time}
           </span>
           .

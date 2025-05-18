@@ -3,6 +3,8 @@ import React, { useContext, useEffect, useRef, useState } from "react";
 import { MdOutlineFileDownload } from "react-icons/md";
 import { TanningContext } from "@/src/contexts/tanningContext";
 import useTimer from "@/src/hooks/useTimer";
+import { Button, Drawer, DrawerBody, DrawerContent, DrawerHeader, Popover, PopoverContent, PopoverTrigger, useDisclosure } from "@heroui/react";
+import Link from "next/link";
 
 function getTimeToSunburnFromCurrentUV(
   uv: number,
@@ -125,7 +127,7 @@ function WidgetLanding({ skinType, setSkinType }: WidgetLandingProps) {
       </div>
       <div className="px-6 pt-2 pb-10 flex flex-col">
         <p className="text-lg font-medium">Börja med att välja din hudtyp:</p>
-        <p className="mt-4 mb-2 text-sm">När jag solar blir jag:</p>
+        <p className="mt-4 mb-2 text-md">När jag solar blir jag:</p>
         <SkinTypeSelect onChange={setSkinType} defaultValue={skinType} />
       </div>
     </div>
@@ -162,8 +164,8 @@ function MainWidget({
     if (countDownBoxRef.current)
       setCountDownBoxRefWidth(countDownBoxRef.current.offsetWidth);
   }, [countDownBoxRef]);
-  const [aboutDrawerIsOpen, setAboutDrawerIsOpen] = useState(false);
-  const readMoreAboutBtn = useRef<HTMLButtonElement>(null);
+
+  const { isOpen: readMoreIsOpen, onOpen: onReadMoreOpen, onOpenChange: onReadMoreOpenChange } = useDisclosure();
   
   useEffect(() => {
     const minUntilMidnight = getMinUntilMidnight();
@@ -187,14 +189,14 @@ function MainWidget({
     <div>
       <div
         className={`transition-colors duration-300 rounded-t-md ${
-          isRunning ? "bg-gray-300" : "bg-white"
+          isRunning ? "bg-gray-300" : "bg-neutral-50"
         } relative`}
       >
         <div className="p-6 relative z-10">
           <div className="flex justify-between items-start mb-6">
             <div className="mr-4">
               <div className="flex items-start">
-                <p className="font-semibold text-xl leading-none">
+                <p className="font-semibold text-xl font-serif leading-none">
                   Maximal soltid
                 </p>
                 <span className="text-[0.7em] bg-yellow-400 text-gray-900 px-2 rounded-full ml-1 font-semibold">
@@ -203,34 +205,32 @@ function MainWidget({
               </div>
               <p className="leading-tight mt-2">
                 Tid som du kan vistas i solen innan solbränna.{" "}
-                <button
-                  className="text-gray-600 font-normal"
-                  ref={readMoreAboutBtn}
-                  onClick={() => setAboutDrawerIsOpen(true)}
+                <span
+                  className="text-gray-600 cursor-pointer font-normal hover:underline"
+                  onClick={onReadMoreOpen}
                 >
                   Läs mer
-                </button>
-                {aboutDrawerIsOpen && (
-                  <div className="fixed inset-0 overflow-hidden z-50">
-                    <div
-                      className="absolute inset-0 bg-black bg-opacity-50 transition-opacity"
-                      onClick={() => setAboutDrawerIsOpen(false)}
-                    ></div>
-                    <div className="absolute top-0 right-0 bottom-0 max-w-md w-full bg-white shadow-xl overflow-y-auto">
-                      <div className="p-4 h-full">
-                        <button
-                          className="absolute right-4 top-4"
-                          onClick={() => setAboutDrawerIsOpen(false)}
-                        >
-                          ✕
-                        </button>
-                        <h2 className="text-2xl font-medium">
-                          Om beräkningen av
-                          <br />
-                          maximal soltid
-                        </h2>
-
-                        <div className="mt-4 text-lg">
+                </span>
+                <Drawer
+                  isOpen={readMoreIsOpen}
+                  onOpenChange={onReadMoreOpenChange}
+                  backdrop="blur"
+                  classNames={{
+                    wrapper: "z-1000",
+                    backdrop: "z-1000",
+                  }}
+                >
+                  <DrawerContent className="bg-neutral-50">
+                    {(onClose) => (
+                      <>
+                        <DrawerHeader className="flex flex-col gap-1">
+                          <h2 className="text-2xl font-medium">
+                            Om beräkningen av
+                            <br />
+                            maximal soltid
+                          </h2>
+                        </DrawerHeader>
+                        <DrawerBody>
                           <p className="font-medium">
                             UV-Kollen beräknar den maximala tiden som en vuxen
                             människa kan befinna sig i direkt solljus innan
@@ -262,27 +262,28 @@ function MainWidget({
                               Hela underlaget för beräkning av maximal soltid
                               finns i PDF-format.
                             </p>
-                            <a
+                            <Button
+                              startContent={<MdOutlineFileDownload />}
+                              as={Link}
                               href="/bilagor/Om beräkning av maximal soltid på UV-Kollen.pdf"
                               target="_blank"
+                              color="primary"
+                              className="rounded mt-4"
                             >
-                              <button className="mt-2 bg-yellow-400 hover:bg-yellow-500 text-black px-4 py-2 rounded flex items-center">
-                                <MdOutlineFileDownload className="h-4 w-4 mr-2" />
-                                Ladda ner
-                              </button>
-                            </a>
+                              Ladda ner
+                            </Button>
                           </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
+                        </DrawerBody>
+                      </>
+                    )}
+                  </DrawerContent>
+                </Drawer>
               </p>
             </div>
 
             {!ttsIsRestOfDay && (
               <button
-                className="px-4 py-2 text-sm bg-gray-900 text-white hover:bg-gray-600 rounded min-w-[110px]"
+                className="cursor-pointer px-4 py-2 text-md bg-gray-900 text-white hover:bg-gray-600 rounded min-w-[110px]"
                 onClick={() => (isRunning ? pause() : resume())}
               >
                 {isRunning ? "Pausa timer" : "Starta timer"}
@@ -291,7 +292,7 @@ function MainWidget({
           </div>
           <div className="text-lg font-medium">
             {ttsIsRestOfDay ? (
-              <p className="text-4xl font-semibold block leading-tight">
+              <p className="text-4xl font-serif font-semibold block leading-tight">
                 Resten av dagen
               </p>
             ) : (
@@ -307,7 +308,7 @@ function MainWidget({
           }}
         />
       </div>
-      <div className="p-3 bg-gray-200 rounded-b-md">
+      <div className="p-3 bg-neutral-200 rounded-b-md">
         <TanningSettings
           currentSPF={spf}
           currentSkinType={skinType}
@@ -351,7 +352,7 @@ interface SkinTypeSelectProps {
 function SkinTypeSelect({ onChange, defaultValue }: SkinTypeSelectProps) {
   return (
     <select
-      className="w-full text-sm bg-orange-100 font-medium hover:bg-yellow-100 cursor-pointer p-2 rounded"
+      className="w-full text-md bg-orange-100 font-medium hover:bg-orange-200 cursor-pointer p-2 rounded"
       onChange={(e) => onChange(e.target.value)}
       defaultValue={defaultValue || "0"}
     >
@@ -382,49 +383,41 @@ function TanningSettings({
   setSPF,
 }: TanningSettingsProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
   return (
     <div>
-      <div className="flex items-center justify-between bg-gray-100 rounded p-3">
+      <div className="flex items-center justify-between bg-neutral-100 rounded p-3">
         <div className="p-1 mr-4">
           <div className="relative inline-block">
             <div className="leading-none">
               <p className="font-semibold">Hudtyp</p>
-              <p
-                className="text-sm whitespace-nowrap mt-1 cursor-pointer"
-                onClick={() => setIsPopoverOpen(!isPopoverOpen)}
-              >
-                Vad är detta?
-              </p>
+              <Popover placement="bottom-start" backdrop="blur">
+                <PopoverTrigger>
+                  <p className="text-sm whitespace-nowrap mt-1 cursor-pointer hover:underline">
+                    Vad är detta?
+                  </p>
+                </PopoverTrigger>
+                <PopoverContent className="bg-neutral-50 rounded-md">
+                  <div className="px-2 py-3 max-w-md">
+                    <p className="font-semibold">De sex hudtyperna</p>
+                    <p>
+                      Världshälsoorganisationen (WHO) har klassificerat hudtyper
+                      i sex kategorier baserat på deras tolerans mot
+                      solstrålning. Läs mer hos{" "}
+                      <a
+                        href="https://www.stralsakerhetsmyndigheten.se/omraden/sol-och-solarier/rad-och-rekommendationer"
+                        rel="noreferrer noopener"
+                        target="_blank"
+                        className="text-blue-600"
+                      >
+                        Strålsäkerhetsmyndigheten
+                      </a>
+                      .
+                    </p>
+                  </div>
+                </PopoverContent>
+              </Popover>
             </div>
-            {isPopoverOpen && (
-              <div className="absolute z-10 bg-white rounded-md shadow-lg mt-2 p-4 w-64">
-                <div className="flex justify-between items-center mb-2">
-                  <p className="font-semibold">De sex hudtyperna</p>
-                  <button
-                    onClick={() => setIsPopoverOpen(false)}
-                    className="text-gray-500"
-                  >
-                    ✕
-                  </button>
-                </div>
-                <p>
-                  Världshälsoorganisationen (WHO) har klassificerat hudtyper i
-                  sex kategorier baserat på deras tolerans mot solstrålning. Läs
-                  mer hos{" "}
-                  <a
-                    href="https://www.stralsakerhetsmyndigheten.se/omraden/sol-och-solarier/rad-och-rekommendationer/solkanslighet/"
-                    rel="noreferrer noopener"
-                    target="_blank"
-                    className="text-blue-600"
-                  >
-                    Strålsäkerhetsmyndigheten
-                  </a>
-                  .
-                </p>
-              </div>
-            )}
           </div>
         </div>
         <div className="p-1">
@@ -434,7 +427,7 @@ function TanningSettings({
           />
         </div>
       </div>
-      <div className="flex items-center justify-between mt-4 bg-gray-100 rounded p-3">
+      <div className="flex items-center justify-between mt-4 bg-neutral-100 rounded p-3">
         <p className="font-semibold mr-4 p-1">Solkrämsfaktor</p>
         <div className="h-8 overflow-hidden">
           <div className="pr-1 flex justify-start items-center flex-wrap flex-row-reverse">
