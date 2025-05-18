@@ -6,14 +6,15 @@ import {
   ListItem,
   Text,
   useColorModeValue,
+  Button
 } from "@chakra-ui/react";
 import React, { useRef } from "react";
 import { SunIcon } from "@chakra-ui/icons";
 import { NextSeo, SocialProfileJsonLd } from "next-seo";
 import Head from "next/head";
+import Link from "next/link";
 import CityAutofill from "@/components/CityAutofill.jsx";
 import Footer from "@/components/Footer.jsx";
-import Link from "next/link";
 
 export default function Home() {
   const siteLinksSearchBoxJSONLd = {
