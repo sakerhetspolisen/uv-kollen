@@ -95,7 +95,7 @@ export default function Home() {
                       </Text>
                       <Button
                         size={["sm", "md"]}
-                        mx={2}
+                        ml={6}
                         my={2}
                         py={5}
                         colorScheme={useColorModeValue("yellow", "yellow")}
