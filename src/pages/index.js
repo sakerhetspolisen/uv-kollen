@@ -86,7 +86,8 @@ export default function Home() {
                       maxW="4xl"
                       display="flex"
                       alignItems="center"
-                      px={6}
+                      pl={4}
+                      pr={2}
                       style={{ borderRadius: 10 }}
                       mb={8}
                     >
